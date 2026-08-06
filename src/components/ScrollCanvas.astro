@@ -1,0 +1,92 @@
+---
+/**
+ * Mount point + capability gate for the WebGL background.
+ *
+ * The canvas element itself is inert markup. The heavy dependencies
+ * (three, gsap, ScrollTrigger, lenis — ~180kb gzipped) live behind a dynamic
+ * import that only fires once the gate below passes, so a phone on a slow
+ * connection, a reduced-motion user, or a machine without WebGL never
+ * downloads a byte of it.
+ *
+ * When the gate fails, the site falls back to exactly what it had before:
+ * the CSS scroll-driven hero recede and the IntersectionObserver reveals in
+ * BaseLayout. That fallback is the *existing* design, not a degraded one.
+ */
+---
+
+<canvas
+  id="scroll-canvas"
+  data-scroll-canvas
+  aria-hidden="true"
+  role="presentation"></canvas>
+
+<script>
+  // Guard: never run twice if the component is rendered on multiple routes.
+  if (!window.__scrollCanvasBooted) {
+    window.__scrollCanvasBooted = true;
+
+    const canvas = document.querySelector<HTMLCanvasElement>('[data-scroll-canvas]');
+
+    /**
+     * The gate. Every check here is a reason NOT to download ~180kb and run
+     * a continuous GPU loop. Ordered cheapest-first.
+     */
+    function shouldEnable(): boolean {
+      // 1. Explicit user preference always wins.
+      if (!window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return false;
+
+      // 2. Respect Data Saver.
+      const connection = (navigator as any).connection;
+      if (connection?.saveData) return false;
+      // 2b. Very slow links: the payload would cost more than the effect is worth.
+      if (/(^|-)(2g|slow-2g)$/.test(connection?.effectiveType ?? '')) return false;
+
+      // 3. Weak hardware. deviceMemory/hardwareConcurrency are advisory and
+      //    absent on some browsers, so only *reported* low values disqualify.
+      const memory = (navigator as any).deviceMemory;
+      if (typeof memory === 'number' && memory < 4) return false;
+      if (typeof navigator.hardwareConcurrency === 'number' && navigator.hardwareConcurrency < 4) {
+        return false;
+      }
+
+      // 4. Actual WebGL availability — probed with a throwaway context so a
+      //    blocklisted or software renderer is caught before we commit.
+      try {
+        const probe = document.createElement('canvas');
+        const gl = probe.getContext('webgl2') || probe.getContext('webgl');
+        if (!gl) return false;
+
+        // Software rasterisers (SwiftShader/llvmpipe) technically satisfy the
+        // API but render a full-screen shader at single-digit frame rates.
+        const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+        if (debugInfo) {
+          const renderer = String(gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL));
+          if (/swiftshader|llvmpipe|software|microsoft basic/i.test(renderer)) return false;
+        }
+      } catch {
+        return false;
+      }
+
+      return true;
+    }
+
+    if (canvas && shouldEnable()) {
+      // Mark the document so CSS can hand the hero effect over to WebGL and
+      // stand down its own scroll-driven animation — running both would
+      // double up the fade.
+      document.documentElement.dataset.webgl = 'on';
+
+      import('../lib/scroll-canvas')
+        .then(({ initScrollCanvas }) => initScrollCanvas(canvas))
+        .catch(() => {
+          // Any failure — chunk 404, WebGL init throw, shader compile error —
+          // reverts to the CSS experience rather than leaving a dead canvas.
+          delete document.documentElement.dataset.webgl;
+          canvas.remove();
+        });
+    } else if (canvas) {
+      // Gate failed: remove the element entirely so it cannot composite.
+      canvas.remove();
+    }
+  }
+</script>
