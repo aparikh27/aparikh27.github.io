@@ -1,43 +1,100 @@
-# Astro Starter Kit: Minimal
+# Personal Portfolio Website
 
-```sh
-npm create astro@latest -- --template minimal
-```
+A high-performance, design-forward personal portfolio built with **Astro**, **React**, **TypeScript**, **Tailwind CSS**, and **WebGL / GSAP**. Designed with an editorial, minimalist aesthetic featuring a warm cream-and-navy palette and fluid canvas scroll interactions.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+---
 
-## 🚀 Project Structure
+## Design & Aesthetic
 
-Inside of your Astro project, you'll see the following folders and files:
+- **Color Palette:**
+  - **Canvas Primary:** Warm Soft Cream (`#FBF9F5`)
+  - **Card / Surface:** Warm Almond / Sand (`#EAE3D2` / `#E8E1D5`)
+  - **Text / Typography:** Deep Soft Navy (`#0A1120`)
+  - **Accent / Micro-interactions:** Muted Slate (`#475569`) & Indigo
+- **Typography:** Modern geometric sans-serif for body/headers paired with monospace (`JetBrains Mono`) for technical metadata and stack badges.
+- **Interactivity:** WebGL scroll canvas shader transitions, GSAP ScrollTrigger kinetic typography, and fluid displacement motion across section boundaries.
+
+---
+
+## Tech Stack
+
+- **Framework:** [Astro](https://astro.build/) (SSG, zero client-side JavaScript by default)
+- **UI Components:** [React](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+- **Animations:** [GSAP](https://greensock.com/gsap/) + [Three.js](https://threejs.org/) / WebGL Canvas
+- **Deployment:** [Vercel](https://vercel.com/) / Netlify
+
+---
+
+## Project Structure
 
 ```text
 /
 ├── public/
+│   ├── favicon.svg
+│   └── assets/              # Images, resume PDF, and static assets
 ├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+│   ├── components/
+│   │   ├── ScrollCanvas.astro # Three.js / WebGL scroll displacement engine
+│   │   ├── Hero.tsx         # Headline, mission, quick links & photo slot
+│   │   ├── ProjectCard.tsx  # Modular card component for homepage & archive
+│   │   ├── Navbar.tsx       # Minimal floating header
+│   │   └── Footer.tsx       # Contact details & social links
+│   ├── data/
+│   │   └── projects.ts      # Strongly typed project objects & metadata
+│   ├── layouts/
+│   │   └── Layout.astro     # Global layout wrapper & meta tags
+│   ├── pages/
+│   │   ├── index.astro      # Main page (Hero, Vision, Top 3 Projects, Experience)
+│   │   └── projects.astro   # Deep-dive full project archive
+│   └── styles/
+│       └── global.css       # Custom utility classes & CSS variables
+├── tailwind.config.mjs      # Custom theme, colors, and typography config
+└── astro.config.mjs
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+---
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## Getting Started
 
-Any static assets, like images, can be placed in the `public/` directory.
+### 1. Prerequisites
+Ensure you have **Node.js 18+** installed on your system.
 
-## 🧞 Commands
+### 2. Installation
 
-All commands are run from the root of the project, from a terminal:
+```bash
+# Clone repository
+git clone https://github.com/your-username/portfolio.git
+cd portfolio
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+# Install dependencies
+npm install
+```
 
-## 👀 Want to learn more?
+### 3. Development Server
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Run the local development server with hot-module reloading:
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:4321](http://localhost:4321) in your browser to preview the site.
+
+---
+
+---
+
+## 📦 Build & Deployment
+
+Build the static production bundle:
+
+```bash
+npm run build
+```
+
+Preview the production build locally:
+
+```bash
+npm run preview
+```
