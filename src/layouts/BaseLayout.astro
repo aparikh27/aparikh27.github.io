@@ -1,0 +1,163 @@
+---
+import '../styles/global.css';
+import Footer from '../components/Footer';
+import ScrollCanvas from '../components/ScrollCanvas.astro';
+import { site } from '../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description = site.description } = Astro.props;
+const pageTitle = title ? `${title} — ${site.name}` : `${site.name} — ${site.jobTitle}`;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
+
+const navLinks = [
+  { href: '/#work', label: 'Work' },
+  { href: '/#experience', label: 'Experience' },
+  { href: '/projects', label: 'Archive' },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="canonical" href={canonical} />
+
+    {/* Matches --color-cream-50, so mobile browser chrome blends with the page. */}
+    <meta name="theme-color" content="#F5F2EB" />
+
+    {/*
+      Inline and synchronous, before any content paints. Setting the flag
+      here (rather than in the deferred script below) means elements that
+      start hidden are hidden from the very first frame — no flash of
+      content that then disappears to animate back in.
+
+      Equally important: if JS is disabled this attribute is never set,
+      and every `.reveal` stays visible. Motion is strictly additive.
+    */}
+    <script is:inline>
+      document.documentElement.dataset.motion = 'on';
+    </script>
+
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+
+  <body class="flex min-h-dvh flex-col">
+    <a class="skip-link" href="#main">Skip to main content</a>
+
+    {/*
+      Fixed backdrop at z-index 0. Every sibling below establishes a stacking
+      position above it, so all text remains real DOM text on top of the
+      canvas — never rendered into WebGL, never resampled.
+    */}
+    <ScrollCanvas />
+
+    {/*
+      Zero-height sentinel. The header's pinned state keys off whether this
+      element is still on screen, which is far cheaper than a scroll
+      listener reading scrollY on every frame — the observer fires twice
+      per page (once out, once back), not sixty times a second.
+    */}
+    <div data-scroll-sentinel aria-hidden="true" class="h-px w-full"></div>
+
+    <header class="site-header" data-site-header>
+      <div class="mx-auto flex w-full max-w-5xl items-center justify-between px-6 py-5">
+        <a
+          href="/"
+          class="font-mono text-sm text-navy-950 transition-colors hover:text-accent-700"
+          aria-label={`${site.name} — home`}
+        >
+          {site.name.toLowerCase().replace(/\s+/g, '.')}
+        </a>
+
+        <nav aria-label="Primary">
+          <ul class="flex items-center gap-7">
+            {
+              navLinks.map((link) => (
+                <li>
+                  <a
+                    class="font-mono text-xs tracking-wide text-slate-600 transition-colors hover:text-navy-950"
+                    href={link.href}
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    {/* `flex-1` keeps the footer pinned to the viewport bottom on short pages. */}
+    <main id="main" class="flex-1">
+      <slot />
+    </main>
+
+    <Footer />
+
+    {/*
+      The entire JS motion budget for the site. Astro bundles and minifies
+      this to well under 1kb — the two behaviours that genuinely cannot be
+      expressed in CSS today, and nothing else.
+    */}
+    <script>
+      // Honour the OS-level setting. Reduced motion means the reveal
+      // observer never runs at all: CSS already leaves those elements
+      // visible, so there is nothing to reveal.
+      const allowsMotion = window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
+
+      // --- 2a. Sticky nav ------------------------------------------------
+      // Runs regardless of motion preference: the pinned header is a
+      // legibility fix (text scrolling under the nav), not decoration.
+      const header = document.querySelector<HTMLElement>('[data-site-header]');
+      const sentinel = document.querySelector('[data-scroll-sentinel]');
+
+      if (header && sentinel) {
+        new IntersectionObserver(
+          ([entry]) => header.classList.toggle('is-pinned', !entry.isIntersecting),
+          { threshold: 0 },
+        ).observe(sentinel);
+      }
+
+      // --- 3. Scroll-triggered reveal ------------------------------------
+      if (allowsMotion) {
+        const targets = document.querySelectorAll('.reveal');
+
+        const observer = new IntersectionObserver(
+          (entries, obs) => {
+            for (const entry of entries) {
+              if (!entry.isIntersecting) continue;
+              entry.target.classList.add('is-visible');
+              // One-shot: stop observing once revealed. Re-animating on
+              // every pass makes a page feel restless when scrolling back.
+              obs.unobserve(entry.target);
+            }
+          },
+          {
+            // Fire slightly before the element reaches the fold, so it is
+            // finishing its reveal as it arrives rather than starting it.
+            rootMargin: '0px 0px -12% 0px',
+            threshold: 0.1,
+          },
+        );
+
+        for (const target of targets) observer.observe(target);
+      }
+    </script>
+  </body>
+</html>
