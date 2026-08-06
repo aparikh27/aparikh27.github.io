@@ -1,0 +1,354 @@
+@import 'tailwindcss';
+
+/* Self-hosted variable fonts — no external requests, no FOUT from a CDN. */
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/jetbrains-mono';
+
+/*
+  Tailwind v4 reads design tokens from CSS, not tailwind.config.mjs. Every
+  entry below is emitted as a real CSS variable (e.g. --color-navy-900), so
+  the palette is available to hand-written CSS and inline styles too — not
+  just to utility classes.
+*/
+@theme {
+  /* ---- Typography -------------------------------------------------- */
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  /* Generous body rhythm. Headings override this locally. */
+  --leading-relaxed: 1.75;
+
+  /* Tighter tracking as type scales up — large text set at default
+     tracking reads loose and unresolved. */
+  --tracking-tightest: -0.035em;
+
+  /* ---- Surfaces (cream-first canvas) --------------------------------
+     Elevation in light UI runs *toward* white, so the ramp is inverted
+     against the old dark theme: white sits above the cream canvas, and
+     cream-100 recedes below it for inset panels. */
+  --color-white: #EAE3D2; /* card / elevated surface — warm cream paper */
+  --color-cream-50: #f5f2eb; /* background primary canvas */
+  --color-cream-100: #efece6; /* recessed panels, subtle fills */
+  --color-cream-200: #e5e1d8; /* heavier fill, chip backgrounds */
+
+  /* ---- Text -------------------------------------------------------- */
+  --color-navy-950: #02075D; /* headings — the darkest note on the page */
+  --color-navy-900: #0f172a; /* body copy */
+  --color-navy-800: #1e293b; /* solid buttons, deep indigo accents */
+  --color-slate-600: #475569; /* secondary / muted text — 6.8:1 on canvas */
+  /* Faintest metadata. Deliberately NOT Tailwind's stock #64748B: that
+     measures 4.26:1 on the cream canvas, under the 4.5:1 AA floor for
+     normal text. It was safe on the old navy background and quietly
+     stopped being safe when the canvas inverted. Darkened to clear AA on
+     both surfaces so the token cannot be misused. */
+  --color-slate-500: #5d6b80; /* 4.8:1 on canvas, 5.4:1 on card */
+
+  /* ---- Accent (muted bronze) ----------------------------------------
+     Three steps because one bronze cannot do every job on cream:
+     accent-500 is the specified #B45309, which measures ~4.5:1 on the
+     canvas — right on the AA threshold, too close to trust for body-sized
+     link text. So links use accent-700 (~6.3:1) and accent-500 is kept
+     for large text, rules, and fills where the ratio is not binding. */
+  --color-accent-400: #23318c; /* hover fills, decorative only */
+  --color-accent-500: #02075D; /* rules, large text, tint fills */
+  --color-accent-700: #02075D; /* link + interactive text — AA safe */
+}
+
+@layer base {
+  :root {
+    /* Single committed light theme — tell the UA so form controls and
+       scrollbars match instead of rendering dark chrome. */
+    color-scheme: light;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    /* Painted beneath the canvas, so there is never a white flash before the
+       first WebGL frame and nothing shows through if the context is lost. */
+    background-color: var(--color-cream-50);
+  }
+
+  /* Lenis owns scrolling when the canvas is live; native smooth scrolling
+     fights it and makes anchor jumps stutter. */
+  html[data-webgl='on'] {
+    scroll-behavior: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    @apply bg-cream-50 font-sans text-navy-900;
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* The canvas sits at z-index -1, which paints *behind* the body background.
+     So the body must go transparent for the wash to be visible; `html` keeps
+     the cream so the page is never bare. */
+  html[data-webgl='on'] body {
+    background-color: transparent;
+  }
+
+  /* --- WebGL backdrop ---------------------------------------------------
+     Fixed, inert, and strictly behind every other element. `pointer-events:
+     none` matters: without it the canvas would swallow text selection and
+     link clicks across the whole viewport. */
+  [data-scroll-canvas] {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    display: block;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    /* Faded in by the engine once the first frame has rendered. */
+    opacity: 0;
+    transition: opacity 0.6s var(--ease-out-soft, ease-out);
+  }
+
+  /* Optical sizing, inverted from the dark theme. Dark-on-light does the
+     opposite of light-on-dark: strokes thin out rather than bloom, so the
+     heading weight goes *up* (560 → 620) to hold the same apparent
+     density. Antialiasing stays default rather than -webkit-font-smoothing:
+     antialiased, which thins dark text on light further. */
+  h1,
+  h2,
+  h3 {
+    @apply text-navy-950;
+    font-variation-settings: 'wght' 620;
+    letter-spacing: var(--tracking-tightest);
+    line-height: 1.15;
+  }
+
+  /* Tabular figures so dates and metrics in the mono stack align in columns. */
+  time,
+  [data-numeric] {
+    font-variant-numeric: tabular-nums;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-accent-700;
+  }
+
+  ::selection {
+    @apply bg-accent-500/20 text-navy-950;
+  }
+}
+
+/* ---- Component utilities -------------------------------------------
+   Every rule below is navy-on-cream. The single most important change
+   from the dark theme: borders are navy at low alpha rather than a
+   mixed grey, so a hairline is literally a diluted version of the text
+   it sits beside — that is what keeps thin rules feeling drawn rather
+   than applied.                                                        */
+
+/* The hairline that defines every card, divider, and rule. */
+@utility hairline {
+  @apply border border-navy-950/10;
+}
+
+/* Editorial section rule. Full-bleed within its container, hair-thin. */
+@utility rule-t {
+  @apply border-t border-navy-950/10;
+}
+
+/* Shared button geometry. `btn-solid` / `btn-ghost` layer color on top. */
+@utility btn {
+  @apply inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium
+         transition-colors duration-150;
+}
+
+/* Navy on cream — the highest-contrast element on the page, which is
+   what a primary action should be. */
+@utility btn-solid {
+  @apply bg-navy-950 text-cream-50 hover:bg-navy-800;
+}
+
+@utility btn-ghost {
+  @apply border border-navy-950/15 text-navy-900 hover:border-navy-950/30 hover:bg-[--color-white];
+}
+
+/* Uppercase mono eyebrow used for section labels and metadata. */
+@utility eyebrow {
+  @apply font-mono text-xs tracking-[0.18em] text-slate-600 uppercase;
+}
+
+@utility skip-link {
+  @apply sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50
+         focus:rounded-md focus:bg-navy-950 focus:px-4 focus:py-2 focus:text-cream-50;
+}
+
+/* ====================================================================
+   MOTION
+   --------------------------------------------------------------------
+   Two safety rails govern everything below, and both matter:
+
+   1. `[data-motion='on']` is set by an inline <head> script in
+      BaseLayout.astro. Any rule that *hides* an element is gated behind
+      it, so if JS fails to run the content is simply visible rather
+      than stuck at opacity: 0 — an animation bug should never cost
+      someone the content.
+
+   2. Hiding is additionally gated behind `prefers-reduced-motion:
+      no-preference`. The global reduced-motion rule near the top of
+      this file collapses animation *durations*, which is enough for
+      keyframes (fill-mode lands them on their end state) but would
+      strand a statically-hidden element. Gating the hidden state is
+      what actually makes reduced-motion safe.
+   ==================================================================== */
+
+/* Shared easing. A slight overshoot-free ease-out — motion decelerates
+   into place, which reads as settling rather than stopping. */
+@theme {
+  --ease-out-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* ---- 1. Hero entry ---------------------------------------------------
+   Pure CSS, runs on load, no JS and no observer. Stagger comes from
+   --rise-delay set per element in Hero.tsx.
+
+   `backwards` fill applies the from-state during the delay, so a
+   staggered element stays hidden until its turn instead of flashing.  */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@utility rise {
+  animation: rise 0.75s var(--ease-out-soft) backwards;
+  animation-delay: var(--rise-delay, 0ms);
+}
+
+/* ---- 3. Scroll-triggered reveal --------------------------------------
+   `.reveal` pairs with the IntersectionObserver in BaseLayout.astro,
+   which adds `.is-visible` once the element enters the viewport.
+   Transition (not keyframes) so an element interrupted mid-reveal
+   animates from where it actually is.                                  */
+@utility reveal {
+  transition:
+    opacity 0.7s var(--ease-out-soft),
+    transform 0.7s var(--ease-out-soft);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-motion='on'] .reveal:not(.is-visible) {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+/* ---- 2a. Sticky nav --------------------------------------------------
+   The header is always sticky; only its *surface* animates in, once the
+   sentinel at the top of the page scrolls away. Transitioning the
+   backdrop rather than the position means no layout shift and no
+   jump when it engages.                                                */
+@utility site-header {
+  @apply sticky top-0 z-40 border-b border-transparent;
+  transition:
+    background-color 0.3s var(--ease-out-soft),
+    border-color 0.3s var(--ease-out-soft),
+    backdrop-filter 0.3s var(--ease-out-soft);
+}
+
+.site-header.is-pinned {
+  @apply border-navy-950/10 bg-cream-50/80;
+  /* Lower saturation boost than the dark theme used: pushing saturation
+     on a warm cream tips it toward yellow. */
+  backdrop-filter: blur(12px) saturate(115%);
+}
+
+/* ---- 2b. Hero recede on scroll ---------------------------------------
+   Scroll-driven CSS animation: the compositor runs this, so there is no
+   scroll listener and nothing on the main thread.
+
+   Progressive enhancement — where `animation-timeline` is unsupported
+   (Firefox at time of writing) the @supports block is skipped entirely
+   and the hero simply scrolls normally. Nothing breaks; the effect is
+   decorative and its absence is unremarkable.                          */
+@keyframes hero-recede {
+  to {
+    opacity: 0.25;
+    transform: scale(0.97);
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* `:not([data-webgl='on'])` hands this effect over to the canvas engine
+       when WebGL is live — GSAP drives the hero fade there, and running both
+       would apply the fade twice. This selector is the entire handover. */
+    html[data-motion='on']:not([data-webgl='on']) .hero-recede {
+      animation: hero-recede linear both;
+      animation-timeline: view();
+      /* Begin only as the hero starts leaving through the top, and
+         finish before it is fully gone — fading to zero would look
+         like a rendering fault rather than an effect. */
+      animation-range: exit 0% exit 75%;
+      transform-origin: 50% 20%;
+      will-change: opacity, transform;
+    }
+  }
+}
+
+/* ---- 4. Micro-interactions -------------------------------------------
+   Hover lift + border warm-up for cards. `focus-within` is included so
+   keyboard users tabbing to a card's links get the same affordance —
+   a hover-only cue is invisible to anyone not using a mouse.           */
+@utility card-interactive {
+  transition:
+    transform 0.25s var(--ease-out-soft),
+    border-color 0.25s var(--ease-out-soft),
+    box-shadow 0.25s var(--ease-out-soft);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .card-interactive:hover,
+  .card-interactive:focus-within {
+    transform: translateY(-4px);
+  }
+}
+
+/* Color/shadow response is not motion, so it applies regardless of the
+   reduced-motion preference — the hover state stays legible either way. */
+.card-interactive:hover,
+.card-interactive:focus-within {
+  @apply border-navy-950/25;
+  /* Light-theme shadows have to be far softer and tinted with the surface
+     hue. A neutral black shadow on cream reads as grey dirt; tinting it
+     navy and keeping the alpha low keeps the lift feeling like paper. */
+  box-shadow:
+    0 1px 2px -1px --alpha(var(--color-navy-950) / 8%),
+    0 12px 28px -14px --alpha(var(--color-navy-950) / 22%);
+}
+
+/* Gentle zoom on card imagery. The parent needs `overflow-hidden` so the
+   scaled image is cropped by the frame instead of spilling past it. */
+@utility card-media {
+  transition: transform 0.5s var(--ease-out-soft);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .group:hover .card-media {
+    transform: scale(1.02);
+  }
+}
