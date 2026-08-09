@@ -6,7 +6,8 @@ import { DownloadIcon, GitHubIcon, LinkedInIcon, MailIcon } from './Icons';
 export interface HeroProps {
   name?: string;
   headline?: string;
-  mission?: string;
+  /** One entry per paragraph. */
+  mission?: readonly string[];
   links?: {
     github: string;
     linkedin: string;
@@ -166,9 +167,12 @@ export function Hero({
         <h2 id="mission-heading" className="eyebrow">
           Vision
         </h2>
-        <p className="mt-5 max-w-3xl leading-relaxed text-pretty text-slate-400 sm:text-lg">
-          {mission}
-        </p>
+        <div className="mt-5 max-w-3xl space-y-4 leading-relaxed text-pretty text-slate-400 sm:text-lg">
+          {/* Static site copy, not a dynamic list — index is a stable key. */}
+          {mission.map((paragraph, index) => (
+            <p key={index}>{paragraph}</p>
+          ))}
+        </div>
       </div>
     </section>
   );
