@@ -11,10 +11,10 @@ export interface ExperienceEntry {
 export const site = {
   name: 'Arav Parikh',
   /** Used in <title> and structured data. */
-  jobTitle: 'Computer Science & Engineering, UCLA',
+  jobTitle: 'UCLA, Bachelor of Science in Computer Science & Engineering',
   url: 'https://aparikh27.github.io',
   description:
-    'Engineer building AI-driven systems — from multi-agent robotics to genomic deep learning — aimed at closing gaps in access to technology.',
+    'Engineer building AI-driven systems aimed at closing gaps in access to technology.',
 
   headline:
     'I build AI-driven systems, from multi-agent robotics to genomic deep learning, aimed at closing the gap between opportunity and access.',

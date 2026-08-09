@@ -108,14 +108,15 @@ export function ProjectCard({
         )}
 
         <header>
-          {/* Metadata leads in mono — it reads as a filing label above the title. */}
-          <p className="flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-[0.6875rem] text-slate-400">
-            <time>{project.time}</time>
-            <span aria-hidden="true">/</span>
-            <span className="text-slate-400">{project.role}</span>
-            <span aria-hidden="true">/</span>
-            <span>{project.place}</span>
-          </p>
+          {isExpanded && (
+            <p className="flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-[0.6875rem] text-slate-400">
+              <time>{project.time}</time>
+              <span aria-hidden="true">/</span>
+              <span className="text-slate-400">{project.role}</span>
+              <span aria-hidden="true">/</span>
+              <span>{project.place}</span>
+            </p>
+          )}
 
           <Heading id={titleId} className="mt-3 text-xl text-cream-50">
             {project.title}

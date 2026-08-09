@@ -107,14 +107,14 @@ export const projects: Project[] = [
   },
   {
     slug: 'chromatin-state-prediction-ernst-lab',
-    title: 'Chromatin State Prediction with Genomic Foundation Models',
+    title: 'Chromatin State Prediction',
     tagline:
       'Fine-tuning genomic foundation models to predict regulatory chromatin states directly from raw DNA sequence.',
     description:
       'Accurate chromatin state prediction is essential for mapping non-coding genomic regions and identifying the gene regulation mechanisms that drive disease. I fine-tuned genomic foundation models — DNABERT-2 and Enformer — to predict regulatory states from raw DNA sequences. To manage extreme label imbalance across millions of genomic sites, I integrated DeepSpeed distributed execution, bfloat16 mixed precision, and class-weighted loss functions into training. I also architected high-throughput data ingestion pipelines using chunked HDF5 streaming, so gigabyte-scale genomic sequence arrays could be processed without memory bottlenecks.',
     highlights: [
       { label: 'Foundation models', value: 'DNABERT-2 · Enformer' },
-      { label: 'Genomic sites', value: 'Millions, class-imbalanced' },
+      { label: 'Genomic data', value: 'Millions, class-imbalanced' },
       { label: 'Training scale', value: 'DeepSpeed + bfloat16' },
     ],
     stack: [
