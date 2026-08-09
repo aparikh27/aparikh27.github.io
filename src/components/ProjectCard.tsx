@@ -27,7 +27,7 @@ function Highlight({ highlight }: { highlight: ProjectHighlight }) {
       <span className="font-medium text-accent-700" data-numeric>
         {highlight.value}
       </span>
-      <span className="text-slate-500">{highlight.label}</span>
+      <span className="text-slate-400">{highlight.label}</span>
     </>
   );
 
@@ -51,7 +51,7 @@ function Highlight({ highlight }: { highlight: ProjectHighlight }) {
 }
 
 const LINK_CLASS =
-  'inline-flex items-center gap-1.5 font-mono text-xs text-slate-600 underline-offset-4 transition-colors hover:text-accent-700 hover:underline';
+  'inline-flex items-center gap-1.5 font-mono text-xs text-slate-400 underline-offset-4 transition-colors hover:text-accent-400 hover:underline';
 
 export function ProjectCard({
   project,
@@ -83,7 +83,7 @@ export function ProjectCard({
       <article
         id={project.slug}
         aria-labelledby={titleId}
-        className="group card-interactive flex h-full flex-col rounded-xl border border-navy-950/10 bg-[--color-white] p-7 sm:p-8"
+        className="group card-interactive flex h-full flex-col rounded-xl border border-cream-50/10 bg-navy-800 p-7 sm:p-8"
       >
         {isExpanded && project.image && (
           // `overflow-hidden` crops the zoom to the frame; without it the
@@ -93,7 +93,7 @@ export function ProjectCard({
           // nodes, and the image frame is the one free transform context.
           <div
             data-parallax="0.05"
-            className="mb-7 overflow-hidden rounded-lg border border-navy-950/10 bg-cream-100"
+            className="mb-7 overflow-hidden rounded-lg border border-cream-50/10 bg-navy-900"
           >
             <img
               src={project.image}
@@ -109,23 +109,23 @@ export function ProjectCard({
 
         <header>
           {/* Metadata leads in mono — it reads as a filing label above the title. */}
-          <p className="flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-[0.6875rem] text-slate-500">
+          <p className="flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-[0.6875rem] text-slate-400">
             <time>{project.time}</time>
             <span aria-hidden="true">/</span>
-            <span className="text-slate-600">{project.role}</span>
+            <span className="text-slate-400">{project.role}</span>
             <span aria-hidden="true">/</span>
             <span>{project.place}</span>
           </p>
 
-          <Heading id={titleId} className="mt-3 text-xl text-navy-950">
+          <Heading id={titleId} className="mt-3 text-xl text-cream-50">
             {project.title}
           </Heading>
 
-          <p className="mt-2.5 leading-relaxed text-pretty text-slate-600">{project.tagline}</p>
+          <p className="mt-2.5 leading-relaxed text-pretty text-slate-400">{project.tagline}</p>
         </header>
 
         {isExpanded && (
-          <p className="mt-5 text-sm leading-relaxed text-pretty text-slate-600">
+          <p className="mt-5 text-sm leading-relaxed text-pretty text-slate-400">
             {project.description}
           </p>
         )}
@@ -148,14 +148,14 @@ export function ProjectCard({
         </div>
 
         {isExpanded && (
-          <p className="mt-6 border-l-2 border-accent-500/35 pl-4 text-sm leading-relaxed text-pretty text-slate-600 italic">
+          <p className="mt-6 border-l-2 border-accent-500/35 pl-4 text-sm leading-relaxed text-pretty text-slate-400 italic">
             {project.visionLink}
           </p>
         )}
 
         {/* `mt-auto` pins the link row to the bottom so cards in a grid align. */}
         {(project.github || project.demo) && (
-          <div className="mt-auto flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-navy-950/10 pt-5">
+          <div className="mt-auto flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-cream-50/10 pt-5">
             {project.github && (
               <a
                 href={project.github}

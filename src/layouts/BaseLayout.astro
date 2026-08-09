@@ -30,8 +30,8 @@ const navLinks = [
     <link rel="icon" href="/favicon.ico" />
     <link rel="canonical" href={canonical} />
 
-    {/* Matches --color-cream-50, so mobile browser chrome blends with the page. */}
-    <meta name="theme-color" content="#F5F2EB" />
+    {/* Matches --color-navy-900, so mobile browser chrome blends with the page. */}
+    <meta name="theme-color" content="#0A1120" />
 
     {/*
       Inline and synchronous, before any content paints. Setting the flag
@@ -78,7 +78,7 @@ const navLinks = [
       <div class="mx-auto flex w-full max-w-5xl items-center justify-between px-6 py-5">
         <a
           href="/"
-          class="font-mono text-sm text-navy-950 transition-colors hover:text-accent-700"
+          class="font-mono text-sm text-cream-50 transition-colors hover:text-accent-400"
           aria-label={`${site.name} — home`}
         >
           {site.name.toLowerCase().replace(/\s+/g, '.')}
@@ -90,7 +90,7 @@ const navLinks = [
               navLinks.map((link) => (
                 <li>
                   <a
-                    class="font-mono text-xs tracking-wide text-slate-600 transition-colors hover:text-navy-950"
+                    class="font-mono text-xs tracking-wide text-slate-400 transition-colors hover:text-accent-400"
                     href={link.href}
                   >
                     {link.label}
