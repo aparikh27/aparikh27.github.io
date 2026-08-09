@@ -69,14 +69,14 @@ export function Hero({
           </h1>
           <p
             aria-hidden="true"
-            className="rise mt-4 font-mono text-sm text-slate-600"
+            className="rise mt-4 font-mono text-sm text-slate-400"
             style={{ '--rise-delay': '80ms' } as StyleWithVars}
           >
             {name}
           </p>
 
           <p
-            className="rise mt-5 max-w-2xl text-3xl leading-[1.25] tracking-tightest text-balance text-navy-950 sm:text-[2.6rem]"
+            className="rise mt-5 max-w-2xl text-3xl leading-[1.25] tracking-tightest text-balance text-cream-50 sm:text-[2.6rem]"
             style={{ '--rise-delay': '160ms' } as StyleWithVars}
           >
             {headline}
@@ -145,7 +145,7 @@ export function Hero({
                 height={224}
                 loading="eager"
                 decoding="async"
-                className="size-40 rounded-2xl border border-navy-950/10 bg-[--color-white] object-cover sm:size-56"
+                className="size-40 rounded-2xl border border-cream-50/10 bg-navy-900 object-cover sm:size-56"
               />
             )}
           </div>
@@ -161,12 +161,12 @@ export function Hero({
       <div
         role="region"
         aria-labelledby="mission-heading"
-        className="reveal mt-24 border-t border-navy-950/10 pt-10"
+        className="reveal mt-24 border-t border-cream-50/10 pt-10"
       >
         <h2 id="mission-heading" className="eyebrow">
           Vision
         </h2>
-        <p className="mt-5 max-w-3xl leading-relaxed text-pretty text-slate-600 sm:text-lg">
+        <p className="mt-5 max-w-3xl leading-relaxed text-pretty text-slate-400 sm:text-lg">
           {mission}
         </p>
       </div>

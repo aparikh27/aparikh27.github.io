@@ -62,9 +62,9 @@ export function initScrollCanvas(canvas: HTMLCanvasElement): ScrollCanvasHandle 
     uDisplacement: { value: 0 },
     uMouse: { value: new THREE.Vector2(0, 0) },
     uResolution: { value: new THREE.Vector2(1, 1) },
-    uCanvasColor: { value: readColor(styles, '--color-cream-50', '#f5f2eb') },
-    uPaperColor: { value: readColor(styles, '--color-white', '#ffffff') },
-    uAccentColor: { value: readColor(styles, '--color-accent-500', '#b45309') },
+    uCanvasColor: { value: readColor(styles, '--color-navy-900', '#0A1120') },
+    uPaperColor: { value: readColor(styles, '--color-navy-800', '#111C33') },
+    uAccentColor: { value: readColor(styles, '--color-accent-500', '#D97706') },
     uGrain: { value: 0.014 },
   };
 

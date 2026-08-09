@@ -22,43 +22,35 @@
      tracking reads loose and unresolved. */
   --tracking-tightest: -0.035em;
 
-  /* ---- Surfaces (cream-first canvas) --------------------------------
-     Elevation in light UI runs *toward* white, so the ramp is inverted
-     against the old dark theme: white sits above the cream canvas, and
-     cream-100 recedes below it for inset panels. */
-  --color-white: #EAE3D2; /* card / elevated surface — warm cream paper */
-  --color-cream-50: #f5f2eb; /* background primary canvas */
-  --color-cream-100: #efece6; /* recessed panels, subtle fills */
-  --color-cream-200: #e5e1d8; /* heavier fill, chip backgrounds */
+  /* ---- Surfaces (navy-first canvas) ---------------------------------
+     The site is a soft navy theme with elevated surfaces and cream text.
+     `navy-900` is the page canvas; `navy-800` is the card/surface layer. */
+  --color-navy-950: #07111f; /* darkest navy for emphasis and subtle borders */
+  --color-navy-900: #0A1120; /* background primary */
+  --color-navy-800: #111C33; /* card / elevated surface */
+
+  --color-white: #FDFBF7; /* alias for the primary cream tone used in a dark theme */
 
   /* ---- Text -------------------------------------------------------- */
-  --color-navy-950: #02075D; /* headings — the darkest note on the page */
-  --color-navy-900: #0f172a; /* body copy */
-  --color-navy-800: #1e293b; /* solid buttons, deep indigo accents */
-  --color-slate-600: #475569; /* secondary / muted text — 6.8:1 on canvas */
-  /* Faintest metadata. Deliberately NOT Tailwind's stock #64748B: that
-     measures 4.26:1 on the cream canvas, under the 4.5:1 AA floor for
-     normal text. It was safe on the old navy background and quietly
-     stopped being safe when the canvas inverted. Darkened to clear AA on
-     both surfaces so the token cannot be misused. */
-  --color-slate-500: #5d6b80; /* 4.8:1 on canvas, 5.4:1 on card */
+  --color-cream-50: #FDFBF7; /* primary text and headings */
+  --color-cream-100: #F8F5F0; /* lighter cream for accents */
+  --color-cream-200: #F1ECE6; /* subtle cream tone */
 
-  /* ---- Accent (muted bronze) ----------------------------------------
-     Three steps because one bronze cannot do every job on cream:
-     accent-500 is the specified #B45309, which measures ~4.5:1 on the
-     canvas — right on the AA threshold, too close to trust for body-sized
-     link text. So links use accent-700 (~6.3:1) and accent-500 is kept
-     for large text, rules, and fills where the ratio is not binding. */
-  --color-accent-400: #23318c; /* hover fills, decorative only */
-  --color-accent-500: #02075D; /* rules, large text, tint fills */
-  --color-accent-700: #02075D; /* link + interactive text — AA safe */
+  --color-slate-400: #94A3B8; /* secondary / muted text */
+  --color-slate-500: #8A9BB0;
+  --color-slate-600: #6B7A8A;
+
+  /* ---- Accent ------------------------------------------------------ */
+  --color-accent-400: #38BDF8; /* subtle hover and link accent */
+  --color-accent-500: #D97706; /* primary accent */
+  --color-accent-700: #B45309; /* stronger accent for text and focus */
 }
 
 @layer base {
   :root {
-    /* Single committed light theme — tell the UA so form controls and
-       scrollbars match instead of rendering dark chrome. */
-    color-scheme: light;
+    /* Single committed dark theme — tell the UA so form controls and
+       scrollbars match instead of rendering light chrome. */
+    color-scheme: dark;
   }
 
   html {
@@ -66,7 +58,7 @@
     -webkit-text-size-adjust: 100%;
     /* Painted beneath the canvas, so there is never a white flash before the
        first WebGL frame and nothing shows through if the context is lost. */
-    background-color: var(--color-cream-50);
+    background-color: var(--color-navy-900);
   }
 
   /* Lenis owns scrolling when the canvas is live; native smooth scrolling
@@ -90,7 +82,7 @@
   }
 
   body {
-    @apply bg-cream-50 font-sans text-navy-900;
+    @apply bg-navy-900 font-sans text-cream-50;
     font-synthesis-weight: none;
     text-rendering: optimizeLegibility;
   }
@@ -127,7 +119,7 @@
   h1,
   h2,
   h3 {
-    @apply text-navy-950;
+    @apply text-cream-50;
     font-variation-settings: 'wght' 620;
     letter-spacing: var(--tracking-tightest);
     line-height: 1.15;
@@ -144,25 +136,22 @@
   }
 
   ::selection {
-    @apply bg-accent-500/20 text-navy-950;
+    @apply bg-accent-500/20 text-cream-50;
   }
 }
 
 /* ---- Component utilities -------------------------------------------
-   Every rule below is navy-on-cream. The single most important change
-   from the dark theme: borders are navy at low alpha rather than a
-   mixed grey, so a hairline is literally a diluted version of the text
-   it sits beside — that is what keeps thin rules feeling drawn rather
-   than applied.                                                        */
+   Every rule below is navy-on-navy. Borders use low-contrast cream and
+   subtle navy tones to keep the visual texture soft on the dark canvas. */
 
 /* The hairline that defines every card, divider, and rule. */
 @utility hairline {
-  @apply border border-navy-950/10;
+  @apply border border-cream-50/10;
 }
 
 /* Editorial section rule. Full-bleed within its container, hair-thin. */
 @utility rule-t {
-  @apply border-t border-navy-950/10;
+  @apply border-t border-cream-50/10;
 }
 
 /* Shared button geometry. `btn-solid` / `btn-ghost` layer color on top. */
@@ -178,12 +167,12 @@
 }
 
 @utility btn-ghost {
-  @apply border border-navy-950/15 text-navy-900 hover:border-navy-950/30 hover:bg-[--color-white];
+  @apply border border-cream-50/15 text-cream-50 hover:border-cream-50/30 hover:bg-navy-800/70;
 }
 
 /* Uppercase mono eyebrow used for section labels and metadata. */
 @utility eyebrow {
-  @apply font-mono text-xs tracking-[0.18em] text-slate-600 uppercase;
+  @apply font-mono text-xs tracking-[0.18em] text-slate-400 uppercase;
 }
 
 @utility skip-link {
@@ -271,9 +260,7 @@
 }
 
 .site-header.is-pinned {
-  @apply border-navy-950/10 bg-cream-50/80;
-  /* Lower saturation boost than the dark theme used: pushing saturation
-     on a warm cream tips it toward yellow. */
+  @apply border-cream-50/10 bg-navy-900/80;
   backdrop-filter: blur(12px) saturate(115%);
 }
 

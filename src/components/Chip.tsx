@@ -8,10 +8,10 @@ export interface ChipProps {
 }
 
 const VARIANTS: Record<NonNullable<ChipProps['variant']>, string> = {
-  /* Transparent rather than filled. On a cream canvas a filled grey chip
-     reads as a disabled control; an outlined one reads as a label. */
-  subtle: 'border-navy-950/12 bg-transparent text-slate-600',
-  solid: 'border-accent-500/30 bg-accent-500/8 text-accent-700',
+  /* Transparent rather than filled. On a dark canvas a subtle chip uses
+     a light border and muted slate text. */
+  subtle: 'border-cream-50/12 bg-transparent text-slate-400',
+  solid: 'border-accent-500/30 bg-accent-500/12 text-accent-500',
 };
 
 /**
