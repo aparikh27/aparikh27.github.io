@@ -1,18 +1,18 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ExperienceAccordion from '../components/ExperienceAccordion.astro';
 import Hero from '../components/Hero';
 import ProjectCard from '../components/ProjectCard';
-import { getFeaturedProjects, projects } from '../data/projects';
-import { site } from '../data/site';
+import { getAllProjects, getFeaturedProjects } from '../data/projects';
 
 const featured = getFeaturedProjects(3);
-const archiveCount = projects.length;
+const allProjects = getAllProjects();
 ---
 
 {/*
-  The React components render at build time — no `client:*` directive, so no
-  runtime JS is shipped. Add `client:visible` only to a component that actually
-  needs interactivity.
+  Single page. The React components render at build time — no `client:*`
+  directive, so no runtime JS is shipped for them. The only interactive
+  behaviour on the page (accordion, reveals, sticky nav) is vanilla script.
 */}
 <BaseLayout>
   <Hero />
@@ -20,11 +20,16 @@ const archiveCount = projects.length;
   <section aria-labelledby="work-heading" class="mx-auto max-w-5xl px-6 py-24 sm:py-32" id="work">
     <div class="flex flex-wrap items-baseline justify-between gap-4">
       <h2 id="work-heading" class="text-2xl">Selected work</h2>
+      {/*
+        Was a link to the `/projects` archive. That route no longer exists,
+        so it now points down the page to the accordion holding the same
+        content — the single-page equivalent of the same journey.
+      */}
       <a
-        href="/projects"
+        href="#experience"
         class="font-mono text-xs text-slate-400 underline-offset-4 transition-colors hover:text-accent-400 hover:underline"
       >
-        All <span data-numeric>{archiveCount}</span> projects →
+        All <span data-numeric>{allProjects.length}</span> roles below ↓
       </a>
     </div>
 
@@ -53,29 +58,13 @@ const archiveCount = projects.length;
     class="mx-auto max-w-5xl border-t border-cream-50/10 px-6 py-24 sm:py-32"
     id="experience"
   >
-    <h2 id="experience-heading" class="text-2xl">Experience</h2>
+    <div class="flex flex-wrap items-baseline justify-between gap-4">
+      <h2 id="experience-heading" class="text-2xl">Experience</h2>
+      <p class="font-mono text-xs text-slate-400">Select a role to expand</p>
+    </div>
 
-    <ol class="mt-12">
-      {
-        site.experience.map((entry) => (
-          <li class="grid gap-2 border-t border-cream-50/10 py-8 first:border-t-0 first:pt-0 sm:grid-cols-[11rem_1fr] sm:gap-8">
-            <p class="font-mono text-xs text-slate-400">
-              <time>{entry.time}</time>
-            </p>
-            <div>
-              <h3 class="text-base">
-                {entry.role}
-                <span class="text-slate-400"> · </span>
-                <span class="text-slate-400">{entry.org}</span>
-              </h3>
-              <p class="mt-1 font-mono text-[0.6875rem] text-slate-400">{entry.place}</p>
-              <p class="mt-3 max-w-2xl leading-relaxed text-pretty text-slate-400">
-                {entry.summary}
-              </p>
-            </div>
-          </li>
-        ))
-      }
-    </ol>
+    <div class="mt-12">
+      <ExperienceAccordion projects={allProjects} />
+    </div>
   </section>
 </BaseLayout>

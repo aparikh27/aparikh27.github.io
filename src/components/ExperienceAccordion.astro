@@ -1,0 +1,231 @@
+---
+/**
+ * Experience accordion — the consolidated replacement for the old archive
+ * route. Collapsed rows show role + organisation; expanding one reveals the
+ * full write-up that used to live on its own page.
+ *
+ * Rendered entirely at build time. The interaction layer is ~1kb of vanilla
+ * JS at the bottom of this file rather than a hydrated React island, which
+ * keeps the page's zero-hydration property intact.
+ *
+ * Progressive enhancement: the markup ships with every panel OPEN. The
+ * collapsing is applied by CSS gated on `html[data-js='on']`, a flag set by
+ * the inline head script in BaseLayout. Without JS the accordion degrades to
+ * a plain, fully-readable list — content is never trapped behind a control
+ * that cannot run.
+ */
+import { Chip, ChipList } from './Chip';
+import { ExternalLinkIcon, GitHubIcon } from './Icons';
+import type { Project } from '../data/projects';
+
+interface Props {
+  projects: Project[];
+}
+
+const { projects } = Astro.props;
+---
+
+<ul class="accordion" data-accordion>
+  {
+    projects.map((project) => (
+      <li class="accordion-item border-t border-cream-50/10 last:border-b">
+        {/*
+          The button is wrapped in a heading so the accordion still forms a
+          navigable outline for screen-reader users jumping by heading.
+        */}
+        <h3 class="m-0">
+          <button
+            type="button"
+            id={`acc-trigger-${project.slug}`}
+            class="accordion-trigger"
+            aria-expanded="true"
+            aria-controls={`acc-panel-${project.slug}`}
+          >
+            <span class="min-w-0 flex-1">
+              <span class="block text-base text-cream-50">{project.role}</span>
+              <span class="mt-1 block font-mono text-xs text-slate-400">{project.place}</span>
+            </span>
+
+            <time class="hidden shrink-0 font-mono text-xs text-slate-400 sm:block">
+              {project.time}
+            </time>
+
+            {/*
+              Decorative: the button's accessible name already comes from the
+              role and organisation text, and `aria-expanded` communicates
+              state. Announcing the chevron would only add noise.
+            */}
+            <svg
+              class="accordion-chevron shrink-0 text-slate-400"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </h3>
+
+        <div
+          id={`acc-panel-${project.slug}`}
+          class="accordion-panel"
+          role="region"
+          aria-labelledby={`acc-trigger-${project.slug}`}
+        >
+          {/*
+            The inner wrapper is required: the panel animates
+            `grid-template-rows`, and the row's child must be the thing that
+            gets clipped. Padding lives here, not on the panel, or it would
+            keep the collapsed height above zero.
+          */}
+          <div class="accordion-panel-inner">
+            <div class="pb-9 sm:pl-1">
+              <p class="text-lg text-cream-50">{project.title}</p>
+
+              <time class="mt-1 block font-mono text-xs text-slate-400 sm:hidden">
+                {project.time}
+              </time>
+
+              <p class="mt-4 max-w-3xl leading-relaxed text-pretty text-slate-400">
+                {project.description}
+              </p>
+
+              {project.highlights.length > 0 && (
+                <ul
+                  aria-label={`Key results for ${project.title}`}
+                  class="mt-6 flex flex-wrap gap-1.5"
+                >
+                  {project.highlights.map((highlight) => (
+                    <li>
+                      <Chip variant="solid">
+                        <span class="font-medium text-accent-400" data-numeric>
+                          {highlight.value}
+                        </span>
+                        <span class="text-slate-500">{highlight.label}</span>
+                      </Chip>
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              <div class="mt-2.5">
+                <ChipList items={project.stack} label={`Tech stack for ${project.title}`} />
+              </div>
+
+              <p class="mt-6 max-w-3xl border-l-2 border-accent-500/35 pl-4 leading-relaxed text-pretty text-slate-500 italic">
+                {project.visionLink}
+              </p>
+
+              {(project.github || project.demo) && (
+                <div class="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2">
+                  {project.github && (
+                    <a
+                      href={project.github}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                      class="accordion-link"
+                    >
+                      <GitHubIcon width="14" height="14" />
+                      Code
+                      <span class="sr-only">for {project.title} on GitHub</span>
+                    </a>
+                  )}
+                  {project.demo && (
+                    <a
+                      href={project.demo}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                      class="accordion-link"
+                    >
+                      <ExternalLinkIcon width="14" height="14" />
+                      Live demo
+                      <span class="sr-only">of {project.title}</span>
+                    </a>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </li>
+    ))
+  }
+</ul>
+
+<script>
+  // --- Experience accordion ------------------------------------------------
+  // Vanilla rather than a React island: the behaviour is a class toggle and
+  // an attribute flip, and hydrating React for it would cost ~45kb to do
+  // what ~1kb does. Follows the WAI-ARIA accordion pattern.
+  const root = document.querySelector<HTMLElement>('[data-accordion]');
+
+  if (root) {
+    const triggers = Array.from(root.querySelectorAll<HTMLButtonElement>('.accordion-trigger'));
+
+    function setExpanded(trigger: HTMLButtonElement, expanded: boolean) {
+      const panel = document.getElementById(trigger.getAttribute('aria-controls') ?? '');
+      if (!panel) return;
+
+      trigger.setAttribute('aria-expanded', String(expanded));
+      panel.classList.toggle('is-open', expanded);
+
+      // `inert` keeps collapsed content out of the tab order and the
+      // accessibility tree. Without it the panel is only visually clipped,
+      // so keyboard users would tab into links they cannot see.
+      panel.toggleAttribute('inert', !expanded);
+    }
+
+    // Collapse everything on boot. The server-rendered markup is open so the
+    // no-JS experience stays readable; this is the enhancement step.
+    for (const trigger of triggers) setExpanded(trigger, false);
+
+    for (const trigger of triggers) {
+      trigger.addEventListener('click', () => {
+        // Multiple panels may be open at once — closing a sibling the user
+        // deliberately opened is a surprising way to lose your place while
+        // comparing two roles.
+        setExpanded(trigger, trigger.getAttribute('aria-expanded') !== 'true');
+      });
+
+      // Roving keyboard support. Enter/Space come free with <button>.
+      trigger.addEventListener('keydown', (event) => {
+        const index = triggers.indexOf(trigger);
+        let next = -1;
+
+        if (event.key === 'ArrowDown') next = (index + 1) % triggers.length;
+        else if (event.key === 'ArrowUp') next = (index - 1 + triggers.length) % triggers.length;
+        else if (event.key === 'Home') next = 0;
+        else if (event.key === 'End') next = triggers.length - 1;
+        else return;
+
+        event.preventDefault();
+        triggers[next].focus();
+      });
+    }
+
+    // Deep links kept working after the archive route was removed: a URL
+    // ending in #some-slug opens that panel and scrolls to it, so previously
+    // shared links still land on the right content.
+    function openFromHash() {
+      const slug = decodeURIComponent(location.hash.replace(/^#/, ''));
+      if (!slug) return;
+
+      const trigger = document.getElementById(`acc-trigger-${slug}`);
+      if (!(trigger instanceof HTMLButtonElement)) return;
+
+      setExpanded(trigger, true);
+      trigger.scrollIntoView({ block: 'center' });
+      trigger.focus();
+    }
+
+    openFromHash();
+    window.addEventListener('hashchange', openFromHash);
+  }
+</script>
