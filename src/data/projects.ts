@@ -1,9 +1,14 @@
 /**
- * Single source of truth for every project surfaced on the site.
+ * Single source of truth for every role and project on the site.
  *
- * The homepage renders `getFeaturedProjects()` (concise cards); `/projects`
- * renders `getAllProjects()` (expanded cards). Adding a project here is the
- * only edit required to surface it in both places.
+ * The site is a single page. `getFeaturedProjects()` drives the "Selected
+ * work" card grid; `getAllProjects()` drives the Experience accordion, which
+ * holds the full write-ups that used to live on the separate archive route.
+ *
+ * Array order is the display order and is reverse-chronological, which the
+ * accordion renders directly. Because the featured filter preserves array
+ * order, the featured trio follows from the same sequence — there is no
+ * second ordering to keep in sync.
  */
 
 /** A key outcome worth calling out on the card — ideally quantified. */
@@ -22,7 +27,7 @@ export interface Project {
   title: string;
   /** One-sentence hook. Kept short — it renders as the card subtitle. */
   tagline: string;
-  /** One paragraph. Shown in full on `/projects`, clamped on the homepage. */
+  /** One paragraph. Shown in full inside the expanded accordion panel. */
   description: string;
   /** Key tech/impact metrics to highlight. */
   highlights: ProjectHighlight[];
@@ -75,6 +80,34 @@ export const projects: Project[] = [
     visionLink:
       'A robot that can perceive, plan, and act without depending on a cloud connection is a robot that can serve communities the cloud never reaches.',
     isFeatured: true,
+  },
+  {
+    slug: 'cardiac-arrhythmia-detection',
+    title: 'Real-Time Cardiac Arrhythmia Detection',
+    tagline:
+      'ML pipelines that classify, detect, and forecast arrhythmias from live cardiac sensor streams for continuous monitoring.',
+    description:
+      'Machine learning pipelines to classify, detect, and predict arrhythmias from real-time heart sensor streams, helping advance personalized medicine through continuous cardiac monitoring. I architected sliding-window feature extraction workflows over raw time-series data to compute statistical and frequency-domain metrics for early-warning systems, implemented Isolation Forest and One-Class SVM models for unsupervised anomaly detection alongside Random Forest classifiers for multi-class sequence detection, and deployed lightweight XGBoost models optimized for low-latency, on-device prediction — forecasting critical cardiac events before threshold breaches occur.',
+    highlights: [
+      { label: 'Anomaly detection', value: 'Isolation Forest · One-Class SVM' },
+      { label: 'Classification', value: 'Random Forest' },
+      { label: 'Forecasting', value: 'On-device XGBoost' },
+    ],
+    stack: [
+      'Predictive Modeling',
+      'Unsupervised Learning',
+      'Feature Engineering',
+      'Isolation Forest',
+      'One-Class SVM',
+      'Random Forest',
+      'XGBoost',
+    ],
+    role: 'Full Stack Developer',
+    time: 'January 2026 — Present',
+    place: 'Crely Inc',
+    visionLink:
+      'Continuous, on-device monitoring means a warning sign doesn’t have to wait for a scheduled appointment to be caught.',
+    isFeatured: false,
   },
   {
     slug: 'smart-knee-brace-bes',
@@ -135,31 +168,22 @@ export const projects: Project[] = [
     isFeatured: true,
   },
   {
-    slug: 'cardiac-arrhythmia-detection',
-    title: 'Real-Time Cardiac Arrhythmia Detection',
+    slug: 'mathematics-instruction-ardent',
+    title: 'Personalized & Olympiad Mathematics Instruction',
     tagline:
-      'ML pipelines that classify, detect, and forecast arrhythmias from live cardiac sensor streams for continuous monitoring.',
+      'One-on-one and competitive-track math instruction, from foundational arithmetic through Olympiad problem-solving.',
     description:
-      'Machine learning pipelines to classify, detect, and predict arrhythmias from real-time heart sensor streams, helping advance personalized medicine through continuous cardiac monitoring. I architected sliding-window feature extraction workflows over raw time-series data to compute statistical and frequency-domain metrics for early-warning systems, implemented Isolation Forest and One-Class SVM models for unsupervised anomaly detection alongside Random Forest classifiers for multi-class sequence detection, and deployed lightweight XGBoost models optimized for low-latency, on-device prediction — forecasting critical cardiac events before threshold breaches occur.',
+      'One-on-one mathematics instruction for 1st–10th grade students, developing customized lesson plans across foundational arithmetic, algebra, and geometry. I expanded this into group coaching for competitive Olympiad math, creating targeted curricula focused on advanced problem-solving techniques, combinatorics, and logic puzzles, while evaluating student progress through continuous diagnostic tracking.',
     highlights: [
-      { label: 'Anomaly detection', value: 'Isolation Forest · One-Class SVM' },
-      { label: 'Classification', value: 'Random Forest' },
-      { label: 'Forecasting', value: 'On-device XGBoost' },
+      { label: 'Grade range', value: '1st – 10th' },
+      { label: 'Track', value: 'Olympiad problem-solving' },
     ],
-    stack: [
-      'Predictive Modeling',
-      'Unsupervised Learning',
-      'Feature Engineering',
-      'Isolation Forest',
-      'One-Class SVM',
-      'Random Forest',
-      'XGBoost',
-    ],
-    role: 'Full Stack Developer',
-    time: 'January 2026 — Present',
-    place: 'Crely Inc',
+    stack: ['Mentorship', 'Curriculum Design', 'Classroom Management'],
+    role: 'Mathematics Instructor',
+    time: 'October 2025 — Present',
+    place: 'Ardent Academy',
     visionLink:
-      'Continuous, on-device monitoring means a warning sign doesn’t have to wait for a scheduled appointment to be caught.',
+      'A student’s access to strong math instruction shouldn’t hinge on their school’s budget — one-on-one teaching closes that gap directly.',
     isFeatured: false,
   },
   {
@@ -210,6 +234,25 @@ export const projects: Project[] = [
     isFeatured: false,
   },
   {
+    slug: 'emc2-math-enrichment',
+    title: 'E=MC² Math Enrichment Program',
+    tagline:
+      'A co-founded after-school math enrichment program serving 400+ district students with personalized, diagnostic-driven curricula.',
+    description:
+      'Co-founded an after-school math enrichment initiative serving 400+ district students. I designed diagnostic testing frameworks to deliver personalized curricula spanning visual, auditory, and project-based learning modules, and managed program operations — recruiting a diverse team of high school instructors, creating translated instructional materials for international transfer students, building the organization’s website, and directing guest lecturer events. Tracking student progress across gamified learning units measured a 70%+ average performance gain on diagnostic evaluations.',
+    highlights: [
+      { label: 'Students served', value: '400+' },
+      { label: 'Performance gain', value: '70%+ average' },
+    ],
+    stack: ['Personalized Learning', 'Team Management', 'Project Management'],
+    role: 'Co-Founder',
+    time: 'August 2022 — August 2025',
+    place: 'E=MC² Math Enrichment Program',
+    visionLink:
+      'Translated materials for transfer students and diagnostic-driven curricula both come from the same premise: access shouldn’t depend on background.',
+    isFeatured: false,
+  },
+  {
     slug: 'medical-imaging-verification-stanford',
     title: 'Multi-Modal Verification Pipeline for Medical Imaging',
     tagline:
@@ -236,44 +279,6 @@ export const projects: Project[] = [
       'Automating verification at this scale is what turns a diagnostic bottleneck into something that scales with the patients who need it.',
     isFeatured: false,
   },
-  {
-    slug: 'mathematics-instruction-ardent',
-    title: 'Personalized & Olympiad Mathematics Instruction',
-    tagline:
-      'One-on-one and competitive-track math instruction, from foundational arithmetic through Olympiad problem-solving.',
-    description:
-      'One-on-one mathematics instruction for 1st–10th grade students, developing customized lesson plans across foundational arithmetic, algebra, and geometry. I expanded this into group coaching for competitive Olympiad math, creating targeted curricula focused on advanced problem-solving techniques, combinatorics, and logic puzzles, while evaluating student progress through continuous diagnostic tracking.',
-    highlights: [
-      { label: 'Grade range', value: '1st – 10th' },
-      { label: 'Track', value: 'Olympiad problem-solving' },
-    ],
-    stack: ['Mentorship', 'Curriculum Design', 'Classroom Management'],
-    role: 'Mathematics Instructor',
-    time: 'October 2025 — Present',
-    place: 'Ardent Academy',
-    visionLink:
-      'A student’s access to strong math instruction shouldn’t hinge on their school’s budget — one-on-one teaching closes that gap directly.',
-    isFeatured: false,
-  },
-  {
-    slug: 'emc2-math-enrichment',
-    title: 'E=MC² Math Enrichment Program',
-    tagline:
-      'A co-founded after-school math enrichment program serving 400+ district students with personalized, diagnostic-driven curricula.',
-    description:
-      'Co-founded an after-school math enrichment initiative serving 400+ district students. I designed diagnostic testing frameworks to deliver personalized curricula spanning visual, auditory, and project-based learning modules, and managed program operations — recruiting a diverse team of high school instructors, creating translated instructional materials for international transfer students, building the organization’s website, and directing guest lecturer events. Tracking student progress across gamified learning units measured a 70%+ average performance gain on diagnostic evaluations.',
-    highlights: [
-      { label: 'Students served', value: '400+' },
-      { label: 'Performance gain', value: '70%+ average' },
-    ],
-    stack: ['Personalized Learning', 'Team Management', 'Project Management'],
-    role: 'Co-Founder',
-    time: 'August 2022 — August 2025',
-    place: 'E=MC² Math Enrichment Program',
-    visionLink:
-      'Translated materials for transfer students and diagnostic-driven curricula both come from the same premise: access shouldn’t depend on background.',
-    isFeatured: false,
-  },
 ];
 
 /** Featured projects for the homepage, capped at `limit` (default 3). */
@@ -281,7 +286,7 @@ export function getFeaturedProjects(limit = 3): Project[] {
   return projects.filter((project) => project.isFeatured).slice(0, limit);
 }
 
-/** Every project, for the `/projects` archive. */
+/** Every role, in reverse-chronological order, for the Experience accordion. */
 export function getAllProjects(): Project[] {
   return projects;
 }

@@ -13,10 +13,11 @@ const { title, description = site.description } = Astro.props;
 const pageTitle = title ? `${title} — ${site.name}` : `${site.name} — ${site.jobTitle}`;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
 
+// Single page: every destination is an in-page anchor. The old `/projects`
+// archive route is gone — its content now lives in the Experience accordion.
 const navLinks = [
-  { href: '/#work', label: 'Work' },
-  { href: '/#experience', label: 'Experience' },
-  { href: '/projects', label: 'Archive' },
+  { href: '#work', label: 'Work' },
+  { href: '#experience', label: 'Experience' },
 ];
 ---
 
@@ -39,11 +40,18 @@ const navLinks = [
       start hidden are hidden from the very first frame — no flash of
       content that then disappears to animate back in.
 
-      Equally important: if JS is disabled this attribute is never set,
-      and every `.reveal` stays visible. Motion is strictly additive.
+      Equally important: if JS is disabled neither attribute is ever set, so
+      every `.reveal` stays visible and every accordion panel stays open.
+      Both systems are strictly additive.
+
+      `data-js` is deliberately separate from `data-motion`: the accordion
+      collapses for everyone with scripting, including users who have asked
+      for reduced motion. Only the *transition* is theirs to opt out of, not
+      the collapsing itself.
     */}
     <script is:inline>
       document.documentElement.dataset.motion = 'on';
+      document.documentElement.dataset.js = 'on';
     </script>
 
     <title>{pageTitle}</title>

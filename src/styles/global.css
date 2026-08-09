@@ -339,3 +339,73 @@
     transform: scale(1.02);
   }
 }
+
+/* ====================================================================
+   EXPERIENCE ACCORDION
+   --------------------------------------------------------------------
+   Height animation uses `grid-template-rows: 0fr → 1fr` rather than the
+   more common `max-height` trick. The reason is correctness, not novelty:
+   max-height requires guessing a value larger than the tallest panel, and
+   these panels vary from three chips to a full case study. Guess low and
+   long content is silently clipped; guess high and every collapse animates
+   through dead space at the wrong speed, so short panels feel sluggish.
+   The grid technique animates to the content's real height, whatever it is.
+
+   Safety rail, mirroring the motion system above: the collapsed state is
+   gated on `html[data-js='on']`. If the script never runs, every panel
+   stays open and fully readable rather than being sealed shut by CSS.
+   ==================================================================== */
+
+@utility accordion-trigger {
+  @apply flex w-full cursor-pointer items-center gap-5 py-7 text-left;
+  transition: opacity 0.2s var(--ease-out-soft);
+}
+
+.accordion-trigger:hover {
+  opacity: 0.72;
+}
+
+/* Focus lands on a full-width row, so inset the ring to keep it on-screen
+   rather than bleeding past the section's horizontal padding. */
+.accordion-trigger:focus-visible {
+  @apply rounded-md outline-2 outline-offset-[-2px] outline-accent-400;
+}
+
+.accordion-chevron {
+  transition: transform 0.35s var(--ease-out-soft);
+}
+
+.accordion-trigger[aria-expanded='true'] .accordion-chevron {
+  transform: rotate(180deg);
+}
+
+.accordion-panel {
+  display: grid;
+  /* Open by default — this is the no-JS state. */
+  grid-template-rows: 1fr;
+  transition:
+    grid-template-rows 0.42s var(--ease-out-soft),
+    opacity 0.3s var(--ease-out-soft);
+}
+
+/* `min-height: 0` is what actually lets a grid row shrink below its content
+   size; without it the row refuses to collapse and nothing animates. */
+.accordion-panel-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+html[data-js='on'] .accordion-panel {
+  grid-template-rows: 0fr;
+  opacity: 0;
+}
+
+html[data-js='on'] .accordion-panel.is-open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+@utility accordion-link {
+  @apply inline-flex items-center gap-1.5 font-mono text-xs text-slate-400
+         underline-offset-4 transition-colors hover:text-accent-400 hover:underline;
+}
