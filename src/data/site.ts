@@ -9,15 +9,17 @@ export const site = {
     'Engineer building AI-driven systems aimed at closing gaps in access to technology.',
 
   headline:
-    'I build AI-driven systems, from multi-agent robotics to genomic deep learning, aimed at closing the gap between opportunity and access.',
+    "I don't want to build technology that only works for the people who already understand it. I want to build technology that works for people.",
   /**
    * The mission statement rendered in its own Hero panel, one entry per
    * paragraph. Kept as an array rather than a single string so Hero can
    * render true paragraph breaks instead of one dense block.
    */
   mission: [
-    'My motivation for pursuing Computer Science and Engineering at UCLA stems from seeing how technology can mean the difference between opportunity and limitation. Early experiences revealed how communities are left behind not for lack of talent, but for lack of access to innovation. This drives my mission: to apply engineering as a tool for equity by developing scalable and accessible technologies that close global gaps.',
-    'At the intersection of computer science, AI, and global development, I aim to tackle interdisciplinary challenges by incorporating diversity of thought — combining a wide range of racial, socio-economic, and academic perspectives into the problem-solving process — to cultivate inclusivity and drive innovation. I’m eager to apply my experience in AI research, software engineering, and collaborative problem-solving to challenge the status quo, expand access to technology, and help billions reach their goals.',
+    'I am a Computer Science and Engineering student at UCLA, exploring AI, software, robotics, and embedded systems. What connects these areas for me is the challenge of taking something difficult and turning it into something useful, intuitive, and accessible.',
+    'I enjoy working on problems where the underlying technology is complicated but the final experience is not. Whether I am thinking about an AI system, a software product, a robotic system, or an embedded device, I keep coming back to the same question: How can I make this powerful technology simpler to use and more useful to the people who need it?',
+    'That is the kind of engineer I want to become.',
+    'I want to spend my career taking ambitious ideas, stripping away unnecessary complexity, and turning them into technology that people can actually use in their everyday lives.'
   ],
 
   headshot: {
