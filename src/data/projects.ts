@@ -21,6 +21,29 @@ export interface ProjectHighlight {
   href?: string;
 }
 
+/** One frame of a project slideshow. */
+export interface ProjectSlide {
+  /**
+   * Path under `public/`. Stored raw and passed through `encodeURI()` at
+   * render time — these are exported presentation files whose names contain
+   * spaces and parentheses, and renaming the originals would break the link
+   * back to the source deck.
+   */
+  src: string;
+  /**
+   * What the slide actually shows. A carousel of unlabelled images is
+   * meaningless without this, so it describes content rather than position —
+   * the position is already announced by the slide's `aria-label`.
+   */
+  alt: string;
+}
+
+export interface ProjectSlideshow {
+  /** Names the carousel for assistive tech, e.g. "…project deck, 14 slides". */
+  label: string;
+  slides: ProjectSlide[];
+}
+
 export interface Project {
   /** Stable, URL-safe id. Used for React keys and `#anchor` links. */
   slug: string;
@@ -43,6 +66,8 @@ export interface Project {
   demo?: string;
   /** Path under `public/`, or a remote URL. */
   image?: string;
+  /** Optional project deck, rendered as a carousel inside the accordion panel. */
+  slideshow?: ProjectSlideshow;
   /** Featured projects appear on the homepage, ordered by array position. */
   isFeatured: boolean;
 }
@@ -277,6 +302,67 @@ export const projects: Project[] = [
     place: 'Stanford Center for AI in Medicine and Imaging',
     visionLink:
       'Automating verification at this scale is what turns a diagnostic bottleneck into something that scales with the patients who need it.',
+    slideshow: {
+      label: 'AI-Based Endotracheal Intubation — Stanford AIMI project deck, 14 slides',
+      slides: [
+        {
+          src: '/stanford/Arav Parikh Stanford AIMI STEM Portfolio.png',
+          alt: 'Title slide: AI-Based Endotracheal Intubation, by Arav Parikh at the Stanford Center for Artificial Intelligence in Medicine and Imaging, in collaboration with Joy, Krish, Dhanush, Penny, Jeffrey and Aayushi.',
+        },
+        {
+          src: '/stanford/Arav Parikh Stanford AIMI STEM Portfolio (1).png',
+          alt: 'Table of contents: Background, Program Part 1, Program Part 2, and Results.',
+        },
+        {
+          src: '/stanford/Arav Parikh Stanford AIMI STEM Portfolio (2).png',
+          alt: 'Foundational concepts, annotated on a chest X-ray: the endotracheal tube inserted into the trachea, the carina where the trachea divides into the bronchi, and the ETT–carina distance, normally 5 cm plus or minus 2 cm. Too close risks pneumothorax; too far risks hypoxia.',
+        },
+        {
+          src: '/stanford/Arav Parikh Stanford AIMI STEM Portfolio (3).png',
+          alt: 'Goals. Part 1: use natural language processing to extract the ETT–carina distance from radiology reports. Part 2: categorise that distance as normal or abnormal, then use a regression model to predict the correct distance and suggest changes.',
+        },
+        {
+          src: '/stanford/Arav Parikh Stanford AIMI STEM Portfolio (4).png',
+          alt: 'Program Part 1 method: a radiology report annotated by the d4data biomedical NER model, beside four steps — unzip and access the data, isolate the sentence containing the ETT–carina distance, tokenise with Hugging Face to find the distance, and add distances to an array with true/false categorisations.',
+        },
+        {
+          src: '/stanford/Arav Parikh Stanford AIMI STEM Portfolio (5).png',
+          alt: 'Problems and solutions across three areas: complex JSON structure causing missed entities, solved with nested loops; exceptions from differing spellings, solved with regex and conditionals; and debugging a loop in the cut function, solved with conditions and print statements.',
+        },
+        {
+          src: '/stanford/Arav Parikh Stanford AIMI STEM Portfolio (6).png',
+          alt: 'Python source for the cut_sentence function, which locates the endotracheal tube mention in a report and returns just the sentence containing the ETT–carina distance measurement.',
+        },
+        {
+          src: '/stanford/Arav Parikh Stanford AIMI STEM Portfolio (7).png',
+          alt: 'Python source running the named-entity-recognition pipeline across every report, parsing results as JSON and collecting the extracted distances into an array, with exception handling that skips corrupt records.',
+        },
+        {
+          src: '/stanford/Arav Parikh Stanford AIMI STEM Portfolio (8).png',
+          alt: 'Program Part 2 method in six steps: correcting data imbalance by removing 3,000 images from a set where tubes were correctly placed 71% of the time, building a CNN from scratch in PyTorch, fine-tuning pre-trained YOLOv8 over 200 epochs, building a ResNet-based model, evaluating with AUROC, mean absolute error and confusion matrices, and building a CNN regression model to recommend adjustments.',
+        },
+        {
+          src: '/stanford/Arav Parikh Stanford AIMI STEM Portfolio (9).png',
+          alt: 'The first CNN, built in PyTorch: model architecture on the left and training loop on the right. It reached 71% accuracy but an AUROC of only 0.5.',
+        },
+        {
+          src: '/stanford/Arav Parikh Stanford AIMI STEM Portfolio (10).png',
+          alt: 'YOLOv8 classification results as normalised confusion matrices. The imbalanced dataset trained over 100 epochs reached an AUROC of 0.8623 but performed 10% worse at detecting incorrectly placed tubes; the balanced dataset trained over 200 epochs reached 0.8223 and was better at identifying incorrectly positioned tubes.',
+        },
+        {
+          src: '/stanford/Arav Parikh Stanford AIMI STEM Portfolio (11).png',
+          alt: 'ResNet-50 results by epoch count, with training code alongside: AUROC of 0.7923 at 5 epochs, 0.8623 at 10, 0.7785 at 15, 0.7471 at 20, and 0.7614 at 35 — making 10 epochs optimal before overfitting.',
+        },
+        {
+          src: '/stanford/Arav Parikh Stanford AIMI STEM Portfolio (12).png',
+          alt: 'CNN regression: the final model predicts the optimal ETT–carina distance from X-ray images and recommends placement adjustments to reduce the risk of pneumothorax, pneumomediastinum or hypoxia. Trained on one epoch, it achieved a mean absolute error of 1.5.',
+        },
+        {
+          src: '/stanford/Arav Parikh Stanford AIMI STEM Portfolio (13).png',
+          alt: 'Results: the ResNet-50 and CNN regression models were chosen for their performance on AUROC and mean absolute error. The method was vetted by Stanford AIMI Center professors and is expected to make endotracheal intubation more personalised, efficient and cost-effective.',
+        },
+      ],
+    },
     isFeatured: false,
   },
 ];

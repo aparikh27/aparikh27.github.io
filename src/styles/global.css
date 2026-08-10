@@ -409,3 +409,90 @@ html[data-js='on'] .accordion-panel.is-open {
   @apply inline-flex items-center gap-1.5 font-mono text-xs text-slate-400
          underline-offset-4 transition-colors hover:text-accent-400 hover:underline;
 }
+
+/* ====================================================================
+   PROJECT CAROUSEL
+   --------------------------------------------------------------------
+   Scroll-snap rather than a transform track: native swipe and momentum,
+   and it still shows every slide with scripting disabled.
+   ==================================================================== */
+
+.carousel-track {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  gap: 0.75rem;
+  /* The slides are exported presentation frames on a near-white ground.
+     A hairline and rounded corners stop them reading as a bright hole
+     punched in the navy page. */
+  @apply rounded-xl border border-cream-50/10 bg-navy-800/60 p-2;
+  /* Hide the horizontal scrollbar — the counter and buttons already
+     communicate position, and a scrollbar under a deck looks like chrome. */
+  scrollbar-width: none;
+}
+
+.carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* Lenis smooth-scrolls the page; without this it also intercepts wheel
+   events over the track and the deck cannot be scrolled horizontally. */
+.carousel-track {
+  overscroll-behavior-x: contain;
+}
+
+.carousel-slide {
+  flex: 0 0 100%;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  margin: 0;
+}
+
+.carousel-slide img {
+  display: block;
+  width: 100%;
+  height: auto;
+  /* Reserving the 16:9 box up front means lazy-loaded slides cannot shift
+     the accordion panel's height as they arrive. */
+  aspect-ratio: 960 / 540;
+  object-fit: contain;
+  @apply rounded-lg;
+  /* Slides are their own artwork; disable the card zoom that applies to
+     other imagery on the page. */
+  transition: none;
+}
+
+@utility carousel-btn {
+  @apply inline-flex size-9 items-center justify-center rounded-lg border
+         border-cream-50/15 text-cream-50 transition-colors;
+}
+
+.carousel-btn:hover:not(:disabled) {
+  @apply border-cream-50/30 bg-navy-800;
+}
+
+.carousel-btn:disabled {
+  @apply cursor-not-allowed border-cream-50/5 text-slate-600;
+}
+
+/* Focusing the track is how keyboard users reach the deck, so the ring
+   has to be clearly visible rather than suppressed. */
+.carousel-track:focus-visible {
+  @apply outline-2 outline-offset-2 outline-accent-400;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carousel-track {
+    scroll-behavior: auto;
+  }
+}
+
+/* 36px clears the WCAG 2.2 AA target minimum, but on a phone the buttons
+   sit right under a swipeable surface where a mis-tap scrolls the deck
+   instead. Coarse pointers get a comfortable 44px. */
+@media (pointer: coarse) {
+  .carousel-btn {
+    @apply size-11;
+  }
+}

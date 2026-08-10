@@ -14,6 +14,7 @@
  * a plain, fully-readable list — content is never trapped behind a control
  * that cannot run.
  */
+import Carousel from './Carousel.astro';
 import { Chip, ChipList } from './Chip';
 import { ExternalLinkIcon, GitHubIcon } from './Icons';
 import type { Project } from '../data/projects';
@@ -119,7 +120,19 @@ const { projects } = Astro.props;
                 <ChipList items={project.stack} label={`Tech stack for ${project.title}`} />
               </div>
 
-              <p class="mt-6 max-w-3xl border-l-2 border-accent-500/35 pl-4 leading-relaxed text-pretty text-slate-500 italic">
+              {/*
+                Deck sits after the prose and before the closing thought: the
+                write-up gives the reader context to read the slides with,
+                and the vision line still lands last.
+              */}
+              {project.slideshow && (
+                <div class="mt-8">
+                  <p class="eyebrow mb-3">Project deck</p>
+                  <Carousel slideshow={project.slideshow} id={project.slug} />
+                </div>
+              )}
+
+              <p class="mt-8 max-w-3xl border-l-2 border-accent-500/35 pl-4 leading-relaxed text-pretty text-slate-500 italic">
                 {project.visionLink}
               </p>
 
