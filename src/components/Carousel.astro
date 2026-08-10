@@ -1,0 +1,205 @@
+---
+/**
+ * Slide carousel for a project deck.
+ *
+ * Built on CSS scroll-snap rather than a transform-based track. That choice
+ * drives most of what follows:
+ *
+ *  - Touch swipe, trackpad, and shift-scroll come free from the platform,
+ *    with native momentum — no gesture handling to write or get wrong.
+ *  - Without JS it degrades to a horizontally scrollable strip that still
+ *    shows every slide, so the deck is never trapped behind a broken button.
+ *  - The browser owns scroll position, so the JS below only has to *read*
+ *    which slide is centred rather than be the source of truth for it.
+ *
+ * Follows the ARIA carousel pattern: a labelled group with
+ * `aria-roledescription="carousel"`, per-slide groups announcing position,
+ * and a polite live region for the counter.
+ */
+import type { ProjectSlideshow } from '../data/projects';
+
+interface Props {
+  slideshow: ProjectSlideshow;
+  /** Slug of the owning project — namespaces ids so multiple decks can coexist. */
+  id: string;
+}
+
+const { slideshow, id } = Astro.props;
+const total = slideshow.slides.length;
+---
+
+<div
+  class="carousel"
+  data-carousel
+  role="group"
+  aria-roledescription="carousel"
+  aria-label={slideshow.label}
+>
+  {/*
+    `tabindex="0"` is deliberate: this is a scrollable region, and without it
+    keyboard users cannot scroll the deck at all. It also gives the arrow-key
+    handler somewhere to live.
+  */}
+  <div
+    class="carousel-track"
+    id={`carousel-track-${id}`}
+    data-carousel-track
+    tabindex="0"
+    aria-label={`${slideshow.label}. Use arrow keys to move between slides.`}
+  >
+    {
+      slideshow.slides.map((slide, index) => (
+        <figure
+          class="carousel-slide"
+          data-carousel-slide
+          role="group"
+          aria-roledescription="slide"
+          aria-label={`Slide ${index + 1} of ${total}`}
+        >
+          {/*
+            `src` is encoded here rather than renaming the source files —
+            these paths carry spaces and parentheses from the exported deck.
+
+            Only the first slide loads eagerly. The remaining thirteen are
+            ~1.5MB in total and load as they are scrolled toward, so opening
+            the accordion never costs the whole deck.
+          */}
+          <img
+            src={encodeURI(slide.src)}
+            alt={slide.alt}
+            width={960}
+            height={540}
+            loading={index === 0 ? 'eager' : 'lazy'}
+            decoding="async"
+            draggable="false"
+          />
+        </figure>
+      ))
+    }
+  </div>
+
+  <div class="mt-3 flex items-center gap-3">
+    <button type="button" class="carousel-btn" data-carousel-prev aria-label="Previous slide">
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <path d="m15 18-6-6 6-6"></path>
+      </svg>
+    </button>
+
+    <button type="button" class="carousel-btn" data-carousel-next aria-label="Next slide">
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <path d="m9 18 6-6-6-6"></path>
+      </svg>
+    </button>
+
+    {/*
+      Polite rather than assertive: the counter changes on every scroll, and
+      an assertive region would interrupt the user mid-gesture.
+    */}
+    <p class="font-mono text-xs text-slate-400" data-carousel-status aria-live="polite">
+      <span data-numeric data-carousel-current>1</span>
+      <span class="text-slate-500"> / </span>
+      <span data-numeric>{total}</span>
+    </p>
+
+    <span class="ml-auto font-mono text-[0.6875rem] text-slate-500">Swipe or use arrow keys</span>
+  </div>
+</div>
+
+<script>
+  // Carousels are enhancement-only: the track scrolls natively without any of
+  // this. The script adds buttons, a counter, and arrow-key stepping.
+  for (const carousel of document.querySelectorAll<HTMLElement>('[data-carousel]')) {
+    const track = carousel.querySelector<HTMLElement>('[data-carousel-track]');
+    const slides = Array.from(carousel.querySelectorAll<HTMLElement>('[data-carousel-slide]'));
+    const prev = carousel.querySelector<HTMLButtonElement>('[data-carousel-prev]');
+    const next = carousel.querySelector<HTMLButtonElement>('[data-carousel-next]');
+    const current = carousel.querySelector<HTMLElement>('[data-carousel-current]');
+
+    if (!track || slides.length === 0) continue;
+
+    // Captured into a const because the helpers below are hoisted function
+    // declarations, and TypeScript does not carry the null-check narrowing
+    // of `track` into them.
+    const scroller = track;
+    let index = 0;
+
+    function sync() {
+      if (current) current.textContent = String(index + 1);
+      // Disabling at the ends is honest about a non-looping carousel — a
+      // button that silently does nothing is worse than one that says so.
+      if (prev) prev.disabled = index === 0;
+      if (next) next.disabled = index === slides.length - 1;
+    }
+
+    function goTo(target: number) {
+      index = Math.max(0, Math.min(slides.length - 1, target));
+      // Scrolling the track directly rather than `scrollIntoView` on the
+      // slide: the latter also scrolls the *page* to bring the carousel into
+      // view, which yanks the reader away from where they were.
+      scroller.scrollTo({
+        left: slides[index].offsetLeft - scroller.offsetLeft,
+        behavior: window.matchMedia('(prefers-reduced-motion: no-preference)').matches
+          ? 'smooth'
+          : 'auto',
+      });
+      sync();
+    }
+
+    prev?.addEventListener('click', () => goTo(index - 1));
+    next?.addEventListener('click', () => goTo(index + 1));
+
+    scroller.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowRight') goTo(index + 1);
+      else if (event.key === 'ArrowLeft') goTo(index - 1);
+      else if (event.key === 'Home') goTo(0);
+      else if (event.key === 'End') goTo(slides.length - 1);
+      else return;
+      // Only swallow the keys actually handled, so Tab and the rest still work.
+      event.preventDefault();
+    });
+
+    // The browser owns scroll position — swipes and trackpad scrolls do not
+    // pass through goTo(). This observer is what keeps `index` truthful.
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const slideIndex = slides.indexOf(entry.target as HTMLElement);
+          if (slideIndex !== -1 && slideIndex !== index) {
+            index = slideIndex;
+            sync();
+          }
+        }
+      },
+      // Majority-visible wins, so the counter flips at the midpoint of a
+      // swipe rather than the instant the next slide peeks in.
+      { root: scroller, threshold: 0.6 },
+    );
+
+    for (const slide of slides) observer.observe(slide);
+
+    sync();
+  }
+</script>
