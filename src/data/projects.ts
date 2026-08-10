@@ -256,6 +256,67 @@ export const projects: Project[] = [
     place: 'The Roncali Lab, UC Davis',
     visionLink:
       'Faster, more precise dosimetry is what lets treatment target the tumor instead of the surrounding tissue a patient needs.',
+    slideshow: {
+      label: 'Organ-Level Dosimetry — UC Davis Roncali Lab project deck, 14 slides',
+      slides: [
+        {
+          src: '/ucdavis/Arav Parikh UC Davis Roncali Lab STEM Portfolio (1).png',
+          alt: 'Background — research concepts. Radiation therapy is cancer treatment using high-energy beams to kill cancer cells; dosimetry is measuring or calculating the radiation absorbed by matter or tissue; medical imaging covers PET, CT and SPECT scans that create visual representations of organs. The Roncali Lab develops quantitative methods for nuclear imaging and therapy, with an emphasis on new technology for positron emission tomography and dosimetry for radionuclide therapy.',
+        },
+        {
+          src: '/ucdavis/Arav Parikh UC Davis Roncali Lab STEM Portfolio (2).png',
+          alt: 'Background — resources. DICOM, the international standard for medical images; MHD, a MetaImage header storing only metadata; NRRD, Nearly Raw Raster Data for n-dimensional raster data; 3D Slicer for visualisation, processing, segmentation and registration; GATE, the Geant4 Application for Tomographic Emission Monte Carlo simulation; and MIM, Medical Image Merge, for receiving, transmitting and processing digital medical images.',
+        },
+        {
+          src: '/ucdavis/Arav Parikh UC Davis Roncali Lab STEM Portfolio (3).png',
+          alt: 'Background — challenges with current dosimetry methods. Accuracy: measurements are often inaccurate because of complex organ geometries. Integration: clinicians find dosimetry difficult to fold into routine practice. Project goal: create a method to quantitatively measure radiation dosage in organs, improving personalised cancer treatment and decreasing side effects.',
+        },
+        {
+          src: '/ucdavis/Arav Parikh UC Davis Roncali Lab STEM Portfolio (4).png',
+          alt: 'Pipeline Part 1 method, in three steps: file conversion from DICOM to MHD to cut metadata overhead; preprocessing to extract dimensions from the MHD file and resample the SPECT dose and CT organ files; and GATE simulation to track radiation particle interactions with tissue and build personalised dose calculations from CT images.',
+        },
+        {
+          src: '/ucdavis/Arav Parikh UC Davis Roncali Lab STEM Portfolio (5).png',
+          alt: 'Pipeline Part 1 — absorbed dose files. Three SPECT scans of a whole body rendered as green intensity maps, with red and yellow hotspots along the torso marking regions of higher absorbed dose.',
+        },
+        {
+          src: '/ucdavis/Arav Parikh UC Davis Roncali Lab STEM Portfolio (6).png',
+          alt: 'Pipeline Part 2 method, in four steps: segmentation using the TotalSegmentator module in 3D Slicer or Medical Image Merge to segment organs with AI; voxel extraction of 3D coordinates from RTStruct files into a NumPy array stored as NRRD; visualisation via a Python script mapping voxels to volume indices and launching 3D Slicer; and calculation matching dose spatial coordinates to organ contours to compute total absorbed dose in Grays per organ.',
+        },
+        {
+          src: '/ucdavis/Arav Parikh UC Davis Roncali Lab STEM Portfolio (7).png',
+          alt: 'Pipeline Part 2 — contoured organs superimposed on the dose map, shown in axial and sagittal views. A 3D Slicer segment list labels the liver, thyroid gland, whole body, rest of body, lungs and kidneys, each in its own colour over the pink dose distribution.',
+        },
+        {
+          src: '/ucdavis/Arav Parikh UC Davis Roncali Lab STEM Portfolio (8).png',
+          alt: 'Pipeline Part 2 — Python source that voxelises region-of-interest contours into a labelled 3D voxel volume, iterating the RTStruct structure set and contour sequences, converting contour points to grid indices by resolution, and bounds-checking each point before writing its label.',
+        },
+        {
+          src: '/ucdavis/Arav Parikh UC Davis Roncali Lab STEM Portfolio (9).png',
+          alt: 'Pipeline Part 3 method, in two steps: processing voxels to extract activity values for each time point from the MHD dosage file, analysing temporal changes in radiation distribution; and graph visualisation using Python’s Matplotlib to plot how activity changes over time.',
+        },
+        {
+          src: '/ucdavis/Arav Parikh UC Davis Roncali Lab STEM Portfolio (10).png',
+          alt: 'Pipeline Part 3 — time activity curve. Python code fits an exponential to label data and plots Total Ionizing Dose against time on a log scale, beside the resulting graph showing TID in Gray-seconds as a function of time for Lutetium-177 in the liver.',
+        },
+        {
+          src: '/ucdavis/Arav Parikh UC Davis Roncali Lab STEM Portfolio (12).png',
+          alt: 'Pipeline Part 4 method, in three steps: extract dose values from the MHD file and match them to the corresponding organ contour; sort the dose values, determine cumulative volume at each level and compute the volume fraction receiving dose; and visualise the result as a Dose-Volume Histogram using Matplotlib.',
+        },
+        {
+          src: '/ucdavis/Arav Parikh UC Davis Roncali Lab STEM Portfolio (13).png',
+          alt: 'Pipeline Part 4 — Dose-Volume Histogram plotting percentage of tissue against dose in Gray for the right kidney, left kidney and liver, beside the Python source that calculates the DVH from segmentation masks and dose arrays and plots each selected segment.',
+        },
+        {
+          src: '/ucdavis/Arav Parikh UC Davis Roncali Lab STEM Portfolio (14).png',
+          alt: 'Final results. Improved accuracy: voxelisation gives a precise representation of anatomical structures, minimising errors. Processing time: automation reduces manual effort and speeds up processing of medical data. Streamlined workflow: a single pipeline runs from RTStruct input to data output, removing complex multi-step processes. Broader accessibility: the simplified workflow can be adopted across diverse healthcare settings, including smaller clinics with limited resources.',
+        },
+        {
+          src: '/ucdavis/Arav Parikh UC Davis Roncali Lab STEM Portfolio (15).png',
+          alt: 'Future plans. Quality: expand to higher-resolution models and advanced visualisation for clearer contours and more accurate 3D models. Scope: incorporate CT, MRI and PET data into a unified segmentation workflow. User experience: build an intuitive graphical interface so medical professionals can load RTStruct files and adjust parameters without programming expertise.',
+        },
+      ],
+    },
     isFeatured: false,
   },
   {
