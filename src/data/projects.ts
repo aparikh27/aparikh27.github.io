@@ -44,6 +44,27 @@ export interface ProjectSlideshow {
   slides: ProjectSlide[];
 }
 
+/** A demo recording shown inside the accordion panel. */
+export interface ProjectVideo {
+  /** Path under `public/`. Encoded at render time, same as slide paths. */
+  src: string;
+  /** MIME type for the `<source>` element. */
+  type: string;
+  /** Still frame shown before playback, so the player is never a black box. */
+  poster: string;
+  /** Accessible name for the player — it is the control's only label. */
+  label: string;
+  /**
+   * The *displayed* box, which may be smaller than the file's intrinsic size
+   * when the recording is letter- or pillar-boxed. The player crops to this
+   * ratio with `object-fit: cover`, so bars never reach the page.
+   */
+  width: number;
+  height: number;
+  /** Visible one-line description under the player. */
+  caption?: string;
+}
+
 export interface Project {
   /** Stable, URL-safe id. Used for React keys and `#anchor` links. */
   slug: string;
@@ -68,6 +89,8 @@ export interface Project {
   image?: string;
   /** Optional project deck, rendered as a carousel inside the accordion panel. */
   slideshow?: ProjectSlideshow;
+  /** Optional demo recording, rendered as a player inside the accordion panel. */
+  video?: ProjectVideo;
   /** Featured projects appear on the homepage, ordered by array position. */
   isFeatured: boolean;
 }
@@ -161,6 +184,22 @@ export const projects: Project[] = [
     place: 'Biomedical Engineering Society',
     visionLink:
       'Recovery shouldn’t depend on how often a patient can get to a clinic — this closes that loop with data instead of a waiting room.',
+    video: {
+      src: '/bmes/Copy of mobileapp.mp4',
+      type: 'video/mp4',
+      poster: '/bmes/mobileapp-poster.jpg',
+      label: 'Demo recording of the patient iOS app: the home screen shows patient information, an upcoming appointment, and the Bluetooth sensor connection state, with tabs for Home, Calendar, Data and Settings.',
+      /*
+       * The file is 1920x1080, but it is a phone screen recording pillarboxed
+       * inside that frame — the real content is 496x1080 at x=712, dead centre
+       * (measured with cropdetect). Declaring the cropped box here lets the
+       * player show the phone at phone proportions instead of a mostly-black
+       * widescreen panel.
+       */
+      width: 496,
+      height: 1080,
+      caption: 'Patient iOS app — home, live sensor connection, and recovery data.',
+    },
     isFeatured: true,
   },
   {
@@ -257,8 +296,12 @@ export const projects: Project[] = [
     visionLink:
       'Faster, more precise dosimetry is what lets treatment target the tumor instead of the surrounding tissue a patient needs.',
     slideshow: {
-      label: 'Organ-Level Dosimetry — UC Davis Roncali Lab project deck, 14 slides',
+      label: 'Organ-Level Dosimetry — UC Davis Roncali Lab project deck, 15 slides',
       slides: [
+        {
+          src: '/ucdavis/Arav Parikh UC Davis Roncali Lab STEM Portfolio.png',
+          alt: 'Title slide — UC Davis Roncali Lab portfolio overview.',
+        },
         {
           src: '/ucdavis/Arav Parikh UC Davis Roncali Lab STEM Portfolio (1).png',
           alt: 'Background — research concepts. Radiation therapy is cancer treatment using high-energy beams to kill cancer cells; dosimetry is measuring or calculating the radiation absorbed by matter or tissue; medical imaging covers PET, CT and SPECT scans that create visual representations of organs. The Roncali Lab develops quantitative methods for nuclear imaging and therapy, with an emphasis on new technology for positron emission tomography and dosimetry for radionuclide therapy.',

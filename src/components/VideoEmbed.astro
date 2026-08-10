@@ -1,0 +1,63 @@
+---
+/**
+ * Demo video player.
+ *
+ * Deliberately a plain `<video controls>` rather than a custom player: the
+ * native control set is already keyboard-operable, screen-reader labelled,
+ * and supports picture-in-picture, playback rate and fullscreen for free.
+ * Rebuilding that in JS would be a lot of code to end up with less.
+ *
+ * Notable choices:
+ *  - `preload="metadata"` — the file is ~3MB and lives inside a collapsed
+ *    accordion. Only the header is fetched until someone presses play, which
+ *    matches how the slide carousels defer their images.
+ *  - No autoplay. Even muted, autoplay would spend the whole download on
+ *    someone who merely expanded the panel to read the write-up.
+ *  - `playsinline` so iOS Safari plays it in place instead of taking over
+ *    the screen with the native fullscreen player.
+ */
+import type { ProjectVideo } from '../data/projects';
+
+interface Props {
+  video: ProjectVideo;
+}
+
+const { video } = Astro.props;
+---
+
+<figure class="video-embed">
+  {/*
+    The frame carries the aspect ratio and the crop. The recording is
+    pillarboxed, so `object-fit: cover` against this box trims the black bars
+    rather than letting them render as part of the page.
+  */}
+  <div class="video-frame" style={`aspect-ratio: ${video.width} / ${video.height};`}>
+    {/*
+      `muted`: the AAC track in this recording is digital silence, so muting
+      costs nothing and stops any browser treating it as unexpected audio.
+      `loop`: it is a 25-second silent demo, so restarting reads as a product
+      loop rather than as the video ending abruptly.
+    */}
+    <video
+      class="video-el"
+      controls
+      preload="metadata"
+      playsinline
+      muted
+      loop
+      poster={encodeURI(video.poster)}
+      aria-label={video.label}
+    >
+      <source src={encodeURI(video.src)} type={video.type} />
+      {/*
+        Fallback for a browser that cannot play the source at all — a plain
+        link is better than an empty box.
+      */}
+      <a href={encodeURI(video.src)} download>Download the demo video (MP4)</a>
+    </video>
+  </div>
+
+  {video.caption && (
+    <figcaption class="mt-3 font-mono text-xs text-slate-400">{video.caption}</figcaption>
+  )}
+</figure>

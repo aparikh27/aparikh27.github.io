@@ -15,6 +15,7 @@
  * that cannot run.
  */
 import Carousel from './Carousel.astro';
+import VideoEmbed from './VideoEmbed.astro';
 import { Chip, ChipList } from './Chip';
 import { ExternalLinkIcon, GitHubIcon } from './Icons';
 import type { Project } from '../data/projects';
@@ -121,10 +122,17 @@ const { projects } = Astro.props;
               </div>
 
               {/*
-                Deck sits after the prose and before the closing thought: the
-                write-up gives the reader context to read the slides with,
-                and the vision line still lands last.
+                Media sits after the prose and before the closing thought:
+                the write-up gives the reader context to read it with, and
+                the vision line still lands last.
               */}
+              {project.video && (
+                <div class="mt-8">
+                  <p class="eyebrow mb-3">Demo</p>
+                  <VideoEmbed video={project.video} />
+                </div>
+              )}
+
               {project.slideshow && (
                 <div class="mt-8">
                   <p class="eyebrow mb-3">Project deck</p>
@@ -188,6 +196,13 @@ const { projects } = Astro.props;
 
       trigger.setAttribute('aria-expanded', String(expanded));
       panel.classList.toggle('is-open', expanded);
+
+      // Collapsing hides the panel but does not stop media inside it. A demo
+      // left playing behind a closed row keeps decoding frames for something
+      // nobody can see.
+      if (!expanded) {
+        for (const media of panel.querySelectorAll('video')) media.pause();
+      }
 
       // `inert` keeps collapsed content out of the tab order and the
       // accessibility tree. Without it the panel is only visually clipped,
