@@ -21,7 +21,7 @@ export const site = {
   ],
 
   headshot: {
-    src: '/headshot.jpg',
+    src: '/headshot.png',
     alt: 'Portrait of Arav Parikh',
   },
 
@@ -30,7 +30,7 @@ export const site = {
     linkedin: 'https://www.linkedin.com/in/aravparikh',
     email: 'aparikh27@g.ucla.edu',
     /** Served from `public/`, so the browser downloads it directly. */
-    resume: '/Arav-Parikh-Resume.pdf',
+    resume: '/resume.pdf',
   },
 } as const;
 
