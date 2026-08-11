@@ -102,7 +102,7 @@ export const projects: Project[] = [
     tagline:
       'A full-stack robotics architecture pairing an event-driven multi-agent framework with a real-time embedded C++ runtime.',
     description:
-      'A full-stack robotics architecture combining an event-driven multi-agent framework with a C++20 embedded middleware runtime in Webots for complex human-robot interaction. To coordinate high-level perception and planning, I decoupled five core agents — Vision (YOLO), Speech (Whisper), Planning (LLMs), Execution (PPO RL), and Memory — around a central Coordinator message bus, an asynchronous FastAPI backend, and a React telemetry dashboard. Beneath that agentic layer, I engineered a lightweight C++20 runtime with a thread-safe, priority-based task scheduler, lock-free queues, custom memory pools, and a ROS-inspired publish-subscribe bus to prevent heap fragmentation. Hardware peripherals are abstracted behind clean HAL interfaces with CMake and GoogleTest integration, so the same stack runs reliably across both bare-metal microcontrollers and simulated environments.',
+      'A full-stack robotics architecture combining an event-driven multi-agent framework with a C++20 embedded middleware runtime in Webots for complex human-robot interaction. To coordinate high-level perception and planning, I decoupled five core agents, Vision (YOLO), Speech (Whisper), Planning (LLMs), Execution (PPO RL), and Memory, around a central Coordinator message bus, an asynchronous FastAPI backend, and a React telemetry dashboard. Beneath that agentic layer, I engineered a lightweight C++20 runtime with a thread-safe, priority-based task scheduler, lock-free queues, custom memory pools, and a ROS-inspired publish-subscribe bus to prevent heap fragmentation. Hardware peripherals are abstracted behind clean HAL interfaces with CMake and GoogleTest integration, so the same stack runs reliably across both bare-metal microcontrollers and simulated environments.',
     highlights: [
       { label: 'Coordinated agents', value: '5' },
       { label: 'Runtime', value: 'C++20 embedded' },
@@ -127,6 +127,21 @@ export const projects: Project[] = [
     place: 'BAI',
     visionLink:
       'A robot that can perceive, plan, and act without depending on a cloud connection is a robot that can serve communities the cloud never reaches.',
+    video: {
+      src: '/personal_project/BAIDemoVideo.mp4',
+      type: 'video/mp4',
+      poster: '/personal_project/bai-demo-poster.jpg',
+      label:
+        'Demo recording of the Robot Vision Dashboard: controls for starting and stopping detection and running a voice command, a live camera feed from the Webots simulation with YOLO bounding boxes labelling detected objects and their confidence scores, and a voice command panel showing the current robot instruction.',
+      /*
+       * Unlike the BMES recording, cropdetect reports the full 1920x1080 frame
+       * as content — this is a genuine landscape capture with no pillarbox, so
+       * the displayed box is the file's own size and nothing is cropped away.
+       */
+      width: 1920,
+      height: 1080,
+      caption: 'Robot Vision Dashboard — live YOLO detection and voice command telemetry.',
+    },
     isFeatured: true,
   },
   {
@@ -135,7 +150,7 @@ export const projects: Project[] = [
     tagline:
       'ML pipelines that classify, detect, and forecast arrhythmias from live cardiac sensor streams for continuous monitoring.',
     description:
-      'Machine learning pipelines to classify, detect, and predict arrhythmias from real-time heart sensor streams, helping advance personalized medicine through continuous cardiac monitoring. I architected sliding-window feature extraction workflows over raw time-series data to compute statistical and frequency-domain metrics for early-warning systems, implemented Isolation Forest and One-Class SVM models for unsupervised anomaly detection alongside Random Forest classifiers for multi-class sequence detection, and deployed lightweight XGBoost models optimized for low-latency, on-device prediction — forecasting critical cardiac events before threshold breaches occur.',
+      'Machine learning pipelines to classify, detect, and predict arrhythmias from real-time heart sensor streams, helping advance personalized medicine through continuous cardiac monitoring. I architected sliding-window feature extraction workflows over raw time-series data to compute statistical and frequency-domain metrics for early-warning systems, implemented Isolation Forest and One-Class SVM models for unsupervised anomaly detection alongside Random Forest classifiers for multi-class sequence detection, and deployed lightweight XGBoost models optimized for low-latency, on-device prediction, forecasting critical cardiac events before threshold breaches occur.',
     highlights: [
       { label: 'Anomaly detection', value: 'Isolation Forest · One-Class SVM' },
       { label: 'Classification', value: 'Random Forest' },
@@ -163,7 +178,7 @@ export const projects: Project[] = [
     tagline:
       'An end-to-end IoT ecosystem streaming real-time sensor telemetry from a post-op knee brace to clinicians and patients.',
     description:
-      'An end-to-end IoT software ecosystem for a smart post-operative knee brace, establishing real-time telemetry pipelines from embedded sensors to cloud and mobile applications to help track and accelerate patient recovery. I engineered custom iOS Bluetooth Low Energy protocols to stream low-latency sensor data — ECG, EMG, and IMU — directly into a production App Store app. On the backend, I built a Django REST API with MySQL on AWS EC2 to process high-frequency time-series streams, integrating the Claude API to generate automated longitudinal patient summaries. To deliver actionable recovery metrics, I designed and implemented responsive React/TypeScript interfaces, prototyped in Figma, to visualize live device analytics for clinicians and patients.',
+      'An end-to-end IoT software ecosystem for a smart post-operative knee brace, establishing real-time telemetry pipelines from embedded sensors to cloud and mobile applications to help track and accelerate patient recovery. I engineered custom iOS Bluetooth Low Energy protocols to stream low-latency sensor data (ECG, EMG, and IMU) directly into a production App Store app. On the backend, I built a Django REST API with MySQL on AWS EC2 to process high-frequency time-series streams, integrating the Claude API to generate automated longitudinal patient summaries. To deliver actionable recovery metrics, I designed and implemented responsive React/TypeScript interfaces, prototyped in Figma, to visualize live device analytics for clinicians and patients.',
     highlights: [
       { label: 'Sensor streams', value: 'ECG · EMG · IMU' },
       { label: 'Delivery', value: 'Live on the App Store' },
@@ -208,7 +223,7 @@ export const projects: Project[] = [
     tagline:
       'Fine-tuning genomic foundation models to predict regulatory chromatin states directly from raw DNA sequence.',
     description:
-      'Accurate chromatin state prediction is essential for mapping non-coding genomic regions and identifying the gene regulation mechanisms that drive disease. I fine-tuned genomic foundation models — DNABERT-2 and Enformer — to predict regulatory states from raw DNA sequences. To manage extreme label imbalance across millions of genomic sites, I integrated DeepSpeed distributed execution, bfloat16 mixed precision, and class-weighted loss functions into training. I also architected high-throughput data ingestion pipelines using chunked HDF5 streaming, so gigabyte-scale genomic sequence arrays could be processed without memory bottlenecks.',
+      'Accurate chromatin state prediction is essential for mapping non-coding genomic regions and identifying the gene regulation mechanisms that drive disease. I fine-tuned genomic foundation models (DNABERT-2 and Enformer) to predict regulatory states from raw DNA sequences. To manage extreme label imbalance across millions of genomic sites, I integrated DeepSpeed distributed execution, bfloat16 mixed precision, and class-weighted loss functions into training. I also architected high-throughput data ingestion pipelines using chunked HDF5 streaming, so gigabyte-scale genomic sequence arrays could be processed without memory bottlenecks.',
     highlights: [
       { label: 'Foundation models', value: 'DNABERT-2 · Enformer' },
       { label: 'Genomic data', value: 'Millions, class-imbalanced' },
@@ -224,11 +239,11 @@ export const projects: Project[] = [
       'Deep Learning',
       'Bioinformatics',
     ],
-    role: 'Computational Biology Research Intern',
+    role: 'Machine Learning Research Intern',
     time: 'October 2025 — Present',
     place: 'The Ernst Lab, UCLA',
     visionLink:
-      'The genome doesn’t read differently for the well-funded lab — better models for interpreting it are a direct line to more equitable diagnosis.',
+      'The genome doesn’t read differently for the well-funded lab; better models for interpreting it are a direct line to more equitable diagnosis.',
     isFeatured: true,
   },
   {
@@ -247,7 +262,7 @@ export const projects: Project[] = [
     time: 'October 2025 — Present',
     place: 'Ardent Academy',
     visionLink:
-      'A student’s access to strong math instruction shouldn’t hinge on their school’s budget — one-on-one teaching closes that gap directly.',
+      'A student’s access to strong math instruction shouldn’t hinge on their school’s budget; one-on-one teaching closes that gap directly.',
     isFeatured: false,
   },
   {
@@ -267,7 +282,7 @@ export const projects: Project[] = [
     time: 'August 2024 — June 2025',
     place: 'Yolo Basin Foundation',
     visionLink:
-      'Conservation work in low-infrastructure habitats needed tools that don’t assume reliable power or bandwidth — this platform doesn’t.',
+      'Conservation work in low-infrastructure habitats needed tools that don’t assume reliable power or bandwidth, and this platform doesn’t.',
     isFeatured: false,
   },
   {
