@@ -10,7 +10,7 @@ interface Props {
 }
 
 const { title, description = site.description } = Astro.props;
-const pageTitle = title ? `${title} — ${site.name}` : `${site.name} — ${site.jobTitle}`;
+const pageTitle = title ? `${title} — ${site.name}` : 'Arav Parikh';
 const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
 
 // Single page: every destination is an in-page anchor. The old `/projects`
@@ -28,7 +28,7 @@ const navLinks = [
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" href="/favicon.svg" />
     <link rel="canonical" href={canonical} />
 
     {/* Matches --color-navy-900, so mobile browser chrome blends with the page. */}
