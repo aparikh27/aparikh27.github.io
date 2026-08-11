@@ -505,14 +505,23 @@ html[data-js='on'] .accordion-panel.is-open {
   margin: 0;
 }
 
-/* Phone-recording proportions, so the player is capped to something
-   phone-sized rather than stretching to the full panel width — a 496:1080
-   box at panel width would be over 2000px tall. */
 .video-frame {
   width: 100%;
-  max-width: 17rem;
   overflow: hidden;
   @apply rounded-xl border border-cream-50/10 bg-navy-800/60;
+}
+
+/* A phone recording is capped to phone width — a 496:1080 box stretched to
+   the full panel would stand over 2000px tall and push everything else off
+   the screen. */
+.video-frame[data-orientation='portrait'] {
+  max-width: 17rem;
+}
+
+/* A landscape capture is UI with readable text in it, so it gets the full
+   panel width, matching how the slide carousels present their 16:9 frames. */
+.video-frame[data-orientation='landscape'] {
+  max-width: 100%;
 }
 
 .video-el {

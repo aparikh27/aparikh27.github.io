@@ -23,20 +23,36 @@ interface Props {
 }
 
 const { video } = Astro.props;
+
+/*
+ * Orientation drives how wide the player is allowed to get. A phone
+ * recording capped at panel width would render a 2000px-tall column; a
+ * desktop capture squeezed into phone width would be unreadable. One flag,
+ * two sensible ceilings.
+ */
+const orientation = video.height > video.width ? 'portrait' : 'landscape';
 ---
 
 <figure class="video-embed">
   {/*
-    The frame carries the aspect ratio and the crop. The recording is
-    pillarboxed, so `object-fit: cover` against this box trims the black bars
-    rather than letting them render as part of the page.
+    The frame carries the aspect ratio and, where the source is letter- or
+    pillar-boxed, the crop: `object-fit: cover` against this box trims the
+    bars rather than letting them render as part of the page. For a source
+    that is already full-frame, the ratio matches the file and nothing is
+    cropped.
   */}
-  <div class="video-frame" style={`aspect-ratio: ${video.width} / ${video.height};`}>
+  <div
+    class="video-frame"
+    data-orientation={orientation}
+    style={`aspect-ratio: ${video.width} / ${video.height};`}
+  >
     {/*
-      `muted`: the AAC track in this recording is digital silence, so muting
-      costs nothing and stops any browser treating it as unexpected audio.
-      `loop`: it is a 25-second silent demo, so restarting reads as a product
-      loop rather than as the video ending abruptly.
+      `muted`: these recordings carry no meaningful audio — the BMES clip's
+      track is digital silence and this one has no audio stream at all — so
+      muting costs nothing and stops any browser treating playback as
+      unexpected sound.
+      `loop`: short silent demos, so restarting reads as a product loop
+      rather than as the video ending abruptly.
     */}
     <video
       class="video-el"
