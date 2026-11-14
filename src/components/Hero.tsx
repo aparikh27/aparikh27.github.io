@@ -128,7 +128,7 @@ export function Hero({
           as a straggler rather than as part of the same gesture.
         */}
         <div
-          className="rise shrink-0"
+          className="rise mt-4 shrink-0 md:mt-8"
           style={{ '--rise-delay': '120ms' } as StyleWithVars}
         >
           {/*
