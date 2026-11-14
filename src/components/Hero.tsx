@@ -146,7 +146,8 @@ export function Hero({
                 height={224}
                 loading="eager"
                 decoding="async"
-                className="size-40 rounded-2xl border border-cream-50/10 bg-navy-900 object-cover sm:size-56"
+                className="size-40 rounded-2xl border border-cream-50/10 bg-navy-900 object-cover object-[50%_20%] sm:size-56"
+                style={{ objectPosition: '50% 20%' }}
               />
             )}
           </div>
