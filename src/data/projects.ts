@@ -97,120 +97,59 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    slug: 'multi-agent-robotic-assistant',
-    title: 'Multi-Agent AI Robotic Assistant',
+    slug: 'warwick-investment-group',
+    title: 'Warwick Investment Group',
     tagline:
-      'A full-stack robotics architecture pairing an event-driven multi-agent framework with a real-time embedded C++ runtime.',
+      'Predictive modeling software to forecast oil well failures and reduce downtime before equipment breaks.',
     description:
-      'A full-stack robotics architecture combining an event-driven multi-agent framework with a C++20 embedded middleware runtime in Webots for complex human-robot interaction. To coordinate high-level perception and planning, I decoupled five core agents, Vision (YOLO), Speech (Whisper), Planning (LLMs), Execution (PPO RL), and Memory, around a central Coordinator message bus, an asynchronous FastAPI backend, and a React telemetry dashboard. Beneath that agentic layer, I engineered a lightweight C++20 runtime with a thread-safe, priority-based task scheduler, lock-free queues, custom memory pools, and a ROS-inspired publish-subscribe bus to prevent heap fragmentation. Hardware peripherals are abstracted behind clean HAL interfaces with CMake and GoogleTest integration, so the same stack runs reliably across both bare-metal microcontrollers and simulated environments.',
+      'I’m developing predictive modeling software to forecast when oil wells are likely to fail, allowing the company to identify potential failures early and take preventative action. The goal is to help optimize maintenance decisions, reduce costly equipment failures, and most importantly, minimize operational downtime and save money.',
     highlights: [
-      { label: 'Coordinated agents', value: '5' },
-      { label: 'Runtime', value: 'C++20 embedded' },
-      { label: 'Simulation', value: 'Webots' },
+      { label: 'Use case', value: 'Oil well failure forecasting' },
+      { label: 'Objective', value: 'Preventative maintenance' },
+      { label: 'Impact', value: 'Reduced downtime + cost savings' },
     ],
-    stack: [
-      'C++20',
-      'FastAPI',
-      'React',
-      'YOLO',
-      'Whisper',
-      'LLM Planning',
-      'PPO Reinforcement Learning',
-      'CMake',
-      'GoogleTest',
-      'Edge AI',
-      'Multi-Agent Systems',
-      'Middleware Engineering',
-    ],
-    role: 'Founder & Lead Engineer',
-    time: 'June 2026 — Present',
-    place: 'BAI',
+    stack: ['Predictive Modeling', 'Time-Series Forecasting', 'Maintenance Optimization'],
+    role: 'Predictive Modeling Engineer',
+    time: 'October 2026 — Present',
+    place: 'Warwick Investment Group',
     visionLink:
-      'A robot that can perceive, plan, and act without depending on a cloud connection is a robot that can serve communities the cloud never reaches.',
-    video: {
-      src: '/personal_project/BAIDemoVideo.mp4',
-      type: 'video/mp4',
-      poster: '/personal_project/bai-demo-poster.jpg',
-      label:
-        'Demo recording of the Robot Vision Dashboard: controls for starting and stopping detection and running a voice command, a live camera feed from the Webots simulation with YOLO bounding boxes labelling detected objects and their confidence scores, and a voice command panel showing the current robot instruction.',
-      /*
-       * Unlike the BMES recording, cropdetect reports the full 1920x1080 frame
-       * as content — this is a genuine landscape capture with no pillarbox, so
-       * the displayed box is the file's own size and nothing is cropped away.
-       */
-      width: 1920,
-      height: 1080,
-      caption: 'Robot Vision Dashboard — live YOLO detection and voice command telemetry.',
-    },
+      'Forecasting failure earlier means maintenance can happen before a problem becomes expensive downtime.',
     isFeatured: true,
   },
   {
-    slug: 'cardiac-arrhythmia-detection',
-    title: 'Real-Time Cardiac Arrhythmia Detection',
+    slug: 'ucla-biomedical-engineering-society',
+    title: 'UCLA Biomedical Engineering Society',
     tagline:
-      'ML pipelines that classify, detect, and forecast arrhythmias from live cardiac sensor streams for continuous monitoring.',
+      'Academic chair and full-stack engineer building smart recovery and clinical monitoring systems for biomechanical health.',
     description:
-      'Machine learning pipelines to classify, detect, and predict arrhythmias from real-time heart sensor streams, helping advance personalized medicine through continuous cardiac monitoring. I architected sliding-window feature extraction workflows over raw time-series data to compute statistical and frequency-domain metrics for early-warning systems, implemented Isolation Forest and One-Class SVM models for unsupervised anomaly detection alongside Random Forest classifiers for multi-class sequence detection, and deployed lightweight XGBoost models optimized for low-latency, on-device prediction, forecasting critical cardiac events before threshold breaches occur.',
-    highlights: [
-      { label: 'Anomaly detection', value: 'Isolation Forest · One-Class SVM' },
-      { label: 'Classification', value: 'Random Forest' },
-      { label: 'Forecasting', value: 'On-device XGBoost' },
-    ],
-    stack: [
-      'Predictive Modeling',
-      'Unsupervised Learning',
-      'Feature Engineering',
-      'Isolation Forest',
-      'One-Class SVM',
-      'Random Forest',
-      'XGBoost',
-    ],
-    role: 'Full Stack Developer',
-    time: 'January 2026 — Present',
-    place: 'Crely Inc',
-    visionLink:
-      'Continuous, on-device monitoring means a warning sign doesn’t have to wait for a scheduled appointment to be caught.',
-    isFeatured: false,
-  },
-  {
-    slug: 'smart-knee-brace-bes',
-    title: 'Smart Post-Operative Knee Brace Platform',
-    tagline:
-      'An end-to-end IoT ecosystem streaming real-time sensor telemetry from a post-op knee brace to clinicians and patients.',
-    description:
-      'An end-to-end IoT software ecosystem for a smart post-operative knee brace, establishing real-time telemetry pipelines from embedded sensors to cloud and mobile applications to help track and accelerate patient recovery. I engineered custom iOS Bluetooth Low Energy protocols to stream low-latency sensor data (ECG, EMG, and IMU) directly into a production App Store app. On the backend, I built a Django REST API with MySQL on AWS EC2 to process high-frequency time-series streams, integrating the Claude API to generate automated longitudinal patient summaries. To deliver actionable recovery metrics, I designed and implemented responsive React/TypeScript interfaces, prototyped in Figma, to visualize live device analytics for clinicians and patients.',
+      'I’m the Academic Chair and a full stack dev on a smart post-op knee brace project. I built the iOS BLE protocols that stream ECG, EMG, and IMU data into our App Store app, plus the Django REST API and MySQL backend on AWS that processes it all, including an integration with the Claude API to auto-generate patient recovery summaries. I’m also working on a Smart Forceps project, developing an instrumented obstetric forceps system integrated with AR glasses. We’re incorporating force and IMU sensors into the forceps to capture real-time measurements during delivery, which are used to generate a 3D model and pressure heat map of the baby’s head. These visualizations are overlaid onto the clinician’s AR glasses, allowing them to monitor force distribution and positioning in real time. We’re also developing predictive models to assess forceps technique, identify improper application, and determine whether excessive force is being applied, with the goal of improving procedural safety and clinical decision-making.',
     highlights: [
       { label: 'Sensor streams', value: 'ECG · EMG · IMU' },
-      { label: 'Delivery', value: 'Live on the App Store' },
-      { label: 'Patient summaries', value: 'Automated via Claude API' },
+      { label: 'Clinical tooling', value: 'AR-assisted forceps monitoring' },
+      { label: 'Patient summaries', value: 'Claude-powered recovery notes' },
     ],
     stack: [
       'iOS · BLE',
       'Django REST Framework',
       'MySQL',
-      'AWS EC2',
+      'AWS',
       'Claude API',
       'React',
       'TypeScript',
-      'Figma',
+      'AR',
+      'Medical Devices',
+      'Clinical Monitoring',
     ],
-    role: 'Full Stack Developer, Academic Chair',
+    role: 'Academic Chair & Full Stack Developer',
     time: 'October 2025 — Present',
-    place: 'Biomedical Engineering Society',
+    place: 'UCLA Biomedical Engineering Society',
     visionLink:
-      'Recovery shouldn’t depend on how often a patient can get to a clinic — this closes that loop with data instead of a waiting room.',
+      'Smart monitoring tools should make care more precise, safer, and easier to act on in real time.',
     video: {
       src: '/bmes/Copy of mobileapp.mp4',
       type: 'video/mp4',
       poster: '/bmes/mobileapp-poster.jpg',
       label: 'Demo recording of the patient iOS app: the home screen shows patient information, an upcoming appointment, and the Bluetooth sensor connection state, with tabs for Home, Calendar, Data and Settings.',
-      /*
-       * The file is 1920x1080, but it is a phone screen recording pillarboxed
-       * inside that frame — the real content is 496x1080 at x=712, dead centre
-       * (measured with cropdetect). Declaring the cropped box here lets the
-       * player show the phone at phone proportions instead of a mostly-black
-       * widescreen panel.
-       */
       width: 496,
       height: 1080,
       caption: 'Patient iOS app — home, live sensor connection, and recovery data.',
@@ -219,15 +158,15 @@ export const projects: Project[] = [
   },
   {
     slug: 'chromatin-state-prediction-ernst-lab',
-    title: 'Chromatin State Prediction',
+    title: 'The Ernst Lab, UCLA',
     tagline:
-      'Fine-tuning genomic foundation models to predict regulatory chromatin states directly from raw DNA sequence.',
+      'Computational biology research fine-tuning genomic foundation models to predict chromatin states from DNA sequence at scale.',
     description:
-      'Accurate chromatin state prediction is essential for mapping non-coding genomic regions and identifying the gene regulation mechanisms that drive disease. I fine-tuned genomic foundation models (DNABERT-2 and Enformer) to predict regulatory states from raw DNA sequences. To manage extreme label imbalance across millions of genomic sites, I integrated DeepSpeed distributed execution, bfloat16 mixed precision, and class-weighted loss functions into training. I also architected high-throughput data ingestion pipelines using chunked HDF5 streaming, so gigabyte-scale genomic sequence arrays could be processed without memory bottlenecks.',
+      'Computational biology research fine-tuning genomic foundation models (DNABERT-2, Enformer) to predict chromatin states directly from DNA sequence. A lot of the actual engineering work here is in handling scale: distributed training with DeepSpeed, mixed precision, and chunked HDF5 pipelines so we can process gigabyte-scale genomic datasets without running into memory walls.',
     highlights: [
-      { label: 'Foundation models', value: 'DNABERT-2 · Enformer' },
-      { label: 'Genomic data', value: 'Millions, class-imbalanced' },
-      { label: 'Training scale', value: 'DeepSpeed + bfloat16' },
+      { label: 'Models', value: 'DNABERT-2 · Enformer' },
+      { label: 'Training scale', value: 'DeepSpeed + mixed precision' },
+      { label: 'Data pipeline', value: 'Chunked HDF5 at GB-scale' },
     ],
     stack: [
       'DNABERT-2',
@@ -235,81 +174,75 @@ export const projects: Project[] = [
       'DeepSpeed',
       'HDF5',
       'Python',
-      'High-Throughput Computing',
-      'Deep Learning',
-      'Bioinformatics',
+      'Mixed Precision',
+      'Distributed Training',
+      'Computational Biology',
     ],
-    role: 'Machine Learning Research Intern',
+    role: 'Research Engineer',
     time: 'October 2025 — Present',
     place: 'The Ernst Lab, UCLA',
     visionLink:
-      'The genome doesn’t read differently for the well-funded lab; better models for interpreting it are a direct line to more equitable diagnosis.',
+      'Better genomic models at scale help uncover the regulatory logic hidden in DNA without running into computational bottlenecks.',
     isFeatured: true,
   },
   {
-    slug: 'mathematics-instruction-ardent',
-    title: 'Personalized & Olympiad Mathematics Instruction',
+    slug: 'cardiac-arrhythmia-detection',
+    title: 'Software Developer, Crely Health',
     tagline:
-      'One-on-one and competitive-track math instruction, from foundational arithmetic through Olympiad problem-solving.',
+      'Built ML pipelines to classify, detect, and predict arrhythmias from real-time heart sensor data for early cardiac risk detection.',
     description:
-      'One-on-one mathematics instruction for 1st–10th grade students, developing customized lesson plans across foundational arithmetic, algebra, and geometry. I expanded this into group coaching for competitive Olympiad math, creating targeted curricula focused on advanced problem-solving techniques, combinatorics, and logic puzzles, while evaluating student progress through continuous diagnostic tracking.',
+      'Built ML pipelines to classify, detect, and predict arrhythmias from real-time heart sensor data. Developed sliding-window feature extraction, unsupervised anomaly detection models (Isolation Forest, One-Class SVM), and low-latency XGBoost models designed to run on-device and flag cardiac risk before it becomes an emergency.',
     highlights: [
-      { label: 'Grade range', value: '1st – 10th' },
-      { label: 'Track', value: 'Olympiad problem-solving' },
+      { label: 'Anomaly detection', value: 'Isolation Forest · One-Class SVM' },
+      { label: 'Forecasting', value: 'On-device XGBoost' },
+      { label: 'Signal processing', value: 'Sliding-window feature extraction' },
     ],
-    stack: ['Mentorship', 'Curriculum Design', 'Classroom Management'],
-    role: 'Mathematics Instructor',
-    time: 'October 2025 — Present',
-    place: 'Ardent Academy',
+    stack: ['Machine Learning', 'Time-Series Analysis', 'Python', 'XGBoost'],
+    role: 'Software Developer',
+    time: 'January 2026 — September 2026',
+    place: 'Crely Health',
     visionLink:
-      'A student’s access to strong math instruction shouldn’t hinge on their school’s budget; one-on-one teaching closes that gap directly.',
+      'Real-time cardiac monitoring should surface risk before it becomes an emergency rather than after the fact.',
     isFeatured: false,
   },
   {
-    slug: 'solar-wildlife-tracking',
-    title: 'Solar-Powered Wildlife Tracking Platform',
+    slug: 'multi-agent-robotic-assistant',
+    title: 'BAI - Behavioral Autonomy Infrastructure',
     tagline:
-      'A ruggedized, solar-powered IoT sensor platform running on-device computer vision for remote wildlife tracking.',
+      'Built a multi-agent robotics framework combining an event-driven agent architecture with a C++20 embedded runtime in Webots.',
     description:
-      'Wildlife tracking in remote habitats often fails due to limited power infrastructure and heavy bandwidth constraints on live video streaming. I designed and prototyped a ruggedized, solar-powered IoT sensor platform to monitor animal movements in field environments, deploying an edge computer vision pipeline on Raspberry Pi hardware with OpenCV to run real-time object detection and multi-target tracking directly on-device. I also engineered low-power wireless communication protocols and lightweight video streaming pipelines, transmitting live telemetry and video feeds to mobile client nodes for remote, real-time observation.',
+      'Built a multi-agent robotics framework from the ground up. It pairs an event-driven agent architecture (Vision, Speech, Planning, Execution, Memory, all coordinated through a central message bus) with a C++20 embedded runtime running in Webots. The Python side handles high-level coordination through an async FastAPI backend and a React dashboard for telemetry, while the C++ layer is a lightweight, thread-safe runtime with a priority-based scheduler, lock-free queues, and custom memory pools to keep things running clean on constrained hardware.',
     highlights: [
-      { label: 'Compute', value: 'Raspberry Pi, on-device CV' },
-      { label: 'Power', value: 'Solar IoT platform' },
-      { label: 'Tracking', value: 'Real-time, multi-target' },
+      { label: 'Agent architecture', value: 'Vision · Speech · Planning · Execution · Memory' },
+      { label: 'Runtime', value: 'C++20 embedded' },
+      { label: 'Stack', value: 'FastAPI · React · Webots' },
     ],
-    stack: ['IoT', 'Telemetry', 'Microcontrollers', 'OpenCV', 'Raspberry Pi'],
-    role: 'Robotics Intern',
-    time: 'August 2024 — June 2025',
-    place: 'Yolo Basin Foundation',
+    stack: ['C++20', 'Multi-Agent Systems', 'Robotics', 'Embedded Systems', 'FastAPI'],
+    role: 'Founder & Lead Engineer',
+    time: 'June 2026 — September 2026',
+    place: 'BAI - Behavioral Autonomy Infrastructure',
     visionLink:
-      'Conservation work in low-infrastructure habitats needed tools that don’t assume reliable power or bandwidth, and this platform doesn’t.',
+      'A robot that can perceive, plan, and act reliably on constrained hardware is one that can serve real-world environments without constant cloud dependency.',
     isFeatured: false,
   },
   {
     slug: 'radiation-dosimetry-pipeline',
-    title: '3D Dosimetry Pipeline for Radiation Therapy',
+    title: 'Data Science Research Intern, The Roncali Lab',
     tagline:
-      'An asynchronous pipeline for gigabyte-scale 3D dose calculation, built to target tumors while sparing healthy tissue.',
+      'Built an asynchronous Python pipeline to process gigabyte-scale 3D volumetric imaging datasets for organ-level radiation dosimetry.',
     description:
-      'Precise 3D spatial mapping and dose calculation are critical in radiation therapy to target tumors accurately while sparing healthy tissue. I architected an asynchronous Python pipeline to process gigabyte-scale 3D volumetric imaging datasets for organ-level dosimetry, engineering DICOM-to-MHD converters that serialized medical imaging series into contiguous NumPy arrays to reduce disk I/O overhead and enable sub-second voxel indexing. I also interfaced Python processing modules with C++ Monte Carlo simulation frameworks (GATE) to map continuous energy fields across 3D mesh geometries, and developed custom 3D Slicer modules to compute spatial dose distribution histograms for clinical analysis.',
+      'Built an asynchronous Python pipeline to process gigabyte-scale 3D volumetric imaging datasets for organ-level radiation dosimetry. Engineered DICOM-to-MHD converters that serialized medical imaging series into contiguous NumPy arrays for sub-second voxel indexing, and interfaced Python processing modules with C++ Monte Carlo simulation frameworks (GATE) to map energy fields across 3D mesh geometries. Also developed custom 3D Slicer modules for dose distribution analysis.',
     highlights: [
-      { label: 'Imaging scale', value: 'Gigabyte-scale 3D volumes' },
+      { label: 'Data scale', value: 'Gigabyte-scale 3D imaging' },
       { label: 'Simulation', value: 'GATE Monte Carlo (C++)' },
-      { label: 'Indexing', value: 'Sub-second voxel lookup' },
+      { label: 'Indexing', value: 'Sub-second voxel access' },
     ],
-    stack: [
-      'Spatial Data Analytics',
-      'Statistical Visualization',
-      'Data Engineering',
-      'Python',
-      'C++',
-      '3D Slicer',
-    ],
+    stack: ['Spatial Data Analytics', 'Statistical Visualization', 'Data Engineering'],
     role: 'Data Science Research Intern',
     time: 'June 2024 — January 2025',
-    place: 'The Roncali Lab, UC Davis',
+    place: 'The Roncali Lab (UC Davis)',
     visionLink:
-      'Faster, more precise dosimetry is what lets treatment target the tumor instead of the surrounding tissue a patient needs.',
+      'More precise dosimetry lets treatment target the tumor instead of the surrounding healthy tissue.',
     slideshow: {
       label: 'Organ-Level Dosimetry — UC Davis Roncali Lab project deck, 15 slides',
       slides: [
@@ -378,49 +311,23 @@ export const projects: Project[] = [
     isFeatured: false,
   },
   {
-    slug: 'emc2-math-enrichment',
-    title: 'E=MC² Math Enrichment Program',
-    tagline:
-      'A co-founded after-school math enrichment program serving 400+ district students with personalized, diagnostic-driven curricula.',
-    description:
-      'Co-founded an after-school math enrichment initiative serving 400+ district students. I designed diagnostic testing frameworks to deliver personalized curricula spanning visual, auditory, and project-based learning modules, and managed program operations — recruiting a diverse team of high school instructors, creating translated instructional materials for international transfer students, building the organization’s website, and directing guest lecturer events. Tracking student progress across gamified learning units measured a 70%+ average performance gain on diagnostic evaluations.',
-    highlights: [
-      { label: 'Students served', value: '400+' },
-      { label: 'Performance gain', value: '70%+ average' },
-    ],
-    stack: ['Personalized Learning', 'Team Management', 'Project Management'],
-    role: 'Co-Founder',
-    time: 'August 2022 — August 2025',
-    place: 'E=MC² Math Enrichment Program',
-    visionLink:
-      'Translated materials for transfer students and diagnostic-driven curricula both come from the same premise: access shouldn’t depend on background.',
-    isFeatured: false,
-  },
-  {
     slug: 'medical-imaging-verification-stanford',
-    title: 'Multi-Modal Verification Pipeline for Medical Imaging',
+    title: 'AI Research Intern, Stanford Center for AI in Medicine and Imaging',
     tagline:
-      'A multi-modal ML pipeline that automates spatial-alignment verification across large medical imaging datasets.',
+      'Helped build an end-to-end multi-modal ML pipeline that verified spatial alignment and object placement across 10,000+ medical images.',
     description:
-      'Manual verification of object placement in medical imaging is a time-consuming process prone to inter-observer variability. My team and I engineered an end-to-end multi-modal machine learning pipeline that verified spatial alignment and object placement across 10,000+ medical images. I fine-tuned a Hugging Face NLP model to extract spatial metrics from unstructured clinical reports, enabling automated labeling for unannotated image datasets, and built and benchmarked CNN, YOLOv8, and ResNet50 vision architectures using cross-validation and AUROC metrics — selecting a production ResNet50 model that achieved an AUROC of 0.8623 to accelerate diagnostic verification workflows.',
+      'Helped build an end-to-end multi-modal ML pipeline that verified spatial alignment and object placement across 10,000+ medical images. Fine-tuned a Hugging Face NLP model to extract spatial metrics from unstructured clinical reports for automated dataset labeling, and benchmarked CNN, YOLOv8, and ResNet50 architectures, ultimately selecting a production ResNet50 model that hit an AUROC of 0.8623.',
     highlights: [
-      { label: 'Images verified', value: '10,000+' },
+      { label: 'Images processed', value: '10,000+' },
       { label: 'Production model', value: 'ResNet50' },
       { label: 'AUROC', value: '0.8623' },
     ],
-    stack: [
-      'Computer Vision',
-      'Natural Language Processing',
-      'Image Classification',
-      'Hugging Face',
-      'YOLOv8',
-      'ResNet50',
-    ],
+    stack: ['Computer Vision', 'Natural Language Processing', 'Image Classification'],
     role: 'AI Research Intern',
     time: 'June 2023',
     place: 'Stanford Center for AI in Medicine and Imaging',
     visionLink:
-      'Automating verification at this scale is what turns a diagnostic bottleneck into something that scales with the patients who need it.',
+      'Automating verification at this scale turns diagnostic bottlenecks into a process that can keep up with real patient demand.',
     slideshow: {
       label: 'AI-Based Endotracheal Intubation — Stanford AIMI project deck, 14 slides',
       slides: [
@@ -482,6 +389,45 @@ export const projects: Project[] = [
         },
       ],
     },
+    isFeatured: false,
+  },
+  {
+    slug: 'solar-wildlife-tracking',
+    title: 'Robotics Intern, Yolo Basin Foundation',
+    tagline:
+      'Designed and prototyped a ruggedized, solar-powered IoT sensor platform for wildlife tracking in remote habitats.',
+    description:
+      'Designed and prototyped a ruggedized, solar-powered IoT sensor platform for wildlife tracking in remote habitats. Deployed an edge computer vision pipeline on Raspberry Pi hardware for real-time object detection and multi-target tracking directly on-device, and built low-power wireless communication protocols to stream live telemetry and video to mobile client nodes for conservation research.',
+    highlights: [
+      { label: 'Compute', value: 'Raspberry Pi + edge CV' },
+      { label: 'Power', value: 'Solar-powered IoT' },
+      { label: 'Tracking', value: 'Real-time, multi-target' },
+    ],
+    stack: ['IoT', 'Telemetry', 'Microcontrollers'],
+    role: 'Robotics Intern',
+    time: 'August 2024 — June 2025',
+    place: 'Yolo Basin Foundation',
+    visionLink:
+      'Remote conservation work needs tools that function with limited power and bandwidth, not assumptions of infrastructure.',
+    isFeatured: false,
+  },
+  {
+    slug: 'emc2-math-enrichment',
+    title: 'Co-Founder, E=MC² Math Enrichment Program',
+    tagline:
+      'Co-founded an after-school math enrichment initiative that grew to serve 400+ district students.',
+    description:
+      'Co-founded an after-school math enrichment initiative that grew to serve 400+ district students. Designed diagnostic testing frameworks for personalized curriculum across visual, auditory, and project-based learning modules. Managed program operations end to end, including recruiting instructors, translating materials for international transfer students, building the org’s website, and running guest lecturer events. This is honestly where I first learned how to manage a team and ship something real, tracked a 70%+ average performance gain across students on diagnostic evaluations.',
+    highlights: [
+      { label: 'Students served', value: '400+' },
+      { label: 'Performance gain', value: '70%+ average' },
+    ],
+    stack: ['Personalized Learning', 'Team Management', 'Project Management'],
+    role: 'Co-Founder',
+    time: 'August 2022 — August 2025',
+    place: 'E=MC² Math Enrichment Program',
+    visionLink:
+      'Access to strong math instruction should not depend on a student’s background, and this program was built around that idea.',
     isFeatured: false,
   },
 ];
